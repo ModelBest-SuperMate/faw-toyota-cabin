@@ -1,0 +1,2430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>一汽丰田·场景需求交流</title>
+<link rel="icon" href="data:," />
+<style>
+  :root {
+    /* ModelBest Brand Guidelines — 官方 Token */
+    --grey:     #EAEAEF;   /* Light Grey  页面底 */
+    --stone:    #333444;   /* Stone       深色辅助文字、边界基色 */
+    --blackout: #000111;   /* Blackout    标题与正文主色 */
+    --tailwind: #9596E2;   /* Tailwind    柔和分隔、次级强调 */
+    --horizon:  #434BFF;   /* Horizon     主要交互、关键信息 */
+    --oceanic:  #273CD9;   /* Oceanic     一级分组、强调文字 */
+
+    /* 由 Stone / Blackout 派生的中性阶 */
+    --surface: #FFFFFF;
+    --ink:     var(--blackout);
+    --ink-2:   #333444;
+    --ink-3:   #6E6F7B;
+    --ink-4:   #9A9BA6;
+    --line:    #DEDEE4;
+    --line-2:  #EAEAEF;
+    --horizon-tint: #EFF0FF;
+    --horizon-line: #D8DAFF;
+
+    /* 需求维度语义色（数据编码用，非品牌色） */
+    --biz: #3F86D6;
+    --biz-soft: #EBF3FC;
+    --home: #C98F2E;
+    --home-soft: #FBF4E8;
+    --self: #7B68C0;
+    --self-soft: #F2EFFA;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 40px 24px 64px;
+    background: var(--grey);
+    color: var(--ink);
+    font-family: "MiSans", "SF Pro Text", -apple-system, BlinkMacSystemFont,
+                 "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 1300px; margin: 0 auto; }
+
+  /* 页头：面壁品牌区 + 项目标题在左，一级 Tab 在右 */
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 20px; flex-wrap: wrap;
+    padding: 0 2px 16px;
+  }
+  .brand { display: flex; align-items: center; min-width: 0; }
+  .brand .logo-mark {
+    width: 132px; height: 34px; display: block;
+    object-fit: contain; object-position: left center;
+  }
+  .brand .logo-divider {
+    width: 1px; height: 18px; margin: 0 14px;
+    background: rgba(51, 52, 68, .22); display: block;
+  }
+  .header h1 {
+    margin: 0; font-size: 20px; font-weight: 400;
+    letter-spacing: .2px; line-height: 1.35;
+  }
+
+  /* 一级 Tab：场景需求 */
+  .tabs {
+    display: inline-flex; align-items: center; gap: 2px; padding: 4px 5px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 9px;
+  }
+  .tab {
+    appearance: none; background: none; border: 0; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: inherit; font-size: 12.5px; font-weight: 500;
+    color: var(--ink-3); letter-spacing: .3px;
+    padding: 7px 12px; border-radius: 6px;
+    transition: background .16s, color .16s;
+  }
+  .tab .no {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: #EFEFF3; color: var(--ink-4);
+    font-size: 10px; font-weight: 600; font-variant-numeric: tabular-nums;
+    transition: background .16s, color .16s;
+  }
+  .tab:hover { color: var(--ink); background: #F5F5F8; }
+  .tab[aria-selected="true"] {
+    color: var(--oceanic); font-weight: 600;
+    background: var(--horizon-tint);
+  }
+  .tab[aria-selected="true"]:hover { background: var(--horizon-tint); }
+  .tab[aria-selected="true"] .no { background: var(--horizon); color: #fff; }
+  .tabs .arrow { width: 12px; height: 12px; flex: none; color: #C9CAD3; }
+  .tabs .arrow svg { width: 100%; height: 100%; display: block; }
+  .tab-panel { display: none; }
+  .tab-panel[data-active="true"] { display: block; }
+  .tab-empty {
+    background: var(--surface); border: 1px dashed var(--line);
+    border-radius: 10px; padding: 72px 32px; text-align: center;
+    color: var(--ink-4); font-size: 14px; letter-spacing: .4px;
+  }
+
+  /* ============ 场景需求：核心用户价值 ============ */
+  .values {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    padding: 18px 30px 22px;
+  }
+  .vcol { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .vhead {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 11.5px; font-weight: 600; letter-spacing: 1.6px;
+  }
+  .vhead i { width: 6px; height: 6px; border-radius: 50%; display: block; }
+  .vhead span { font-size: 10.5px; font-weight: 400; letter-spacing: .3px; color: var(--ink-4); }
+  .vcard { flex: 1; border-radius: 8px; padding: 15px 16px 16px; }
+  .vcard h4 {
+    margin: 0 0 7px; font-size: 13.5px; font-weight: 600;
+    line-height: 1.55; color: var(--ink);
+  }
+  .vcard p { margin: 0; font-size: 12px; line-height: 1.8; color: var(--ink-3); }
+
+  .vcol[data-kind="biz"]  .vhead { color: #2F6BAE; }
+  .vcol[data-kind="biz"]  .vhead i { background: var(--biz); }
+  .vcol[data-kind="biz"]  .vcard { background: var(--biz-soft); }
+  .vcol[data-kind="home"] .vhead { color: #9C6E20; }
+  .vcol[data-kind="home"] .vhead i { background: var(--home); }
+  .vcol[data-kind="home"] .vcard { background: var(--home-soft); }
+  .vcol[data-kind="self"] .vhead { color: #63529E; }
+  .vcol[data-kind="self"] .vhead i { background: var(--self); }
+  .vcol[data-kind="self"] .vcard { background: var(--self-soft); }
+
+  .vsplit { height: 1px; margin: 0 30px; background: var(--line-2); }
+  /* 场景页与预研 / 量产页共用同一套标题栏结构，保留同尺寸图标作为识别点 */
+  .scene-section-head {
+    align-items: center;
+    margin: 0;
+    border-radius: 0;
+  }
+  .section-title-line {
+    display: flex; align-items: center; gap: 14px;
+    min-width: 0;
+  }
+  .section-title-icon {
+    flex: none; display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 13px;
+    color: #fff;
+    background: linear-gradient(145deg, #434BFF 0%, #7078E8 100%);
+    box-shadow: 0 6px 14px rgba(67, 75, 255, .18);
+  }
+  .section-title-icon svg { width: 28px; height: 28px; display: block; }
+  .scene-section-copy { min-width: 0; }
+  .scene-section-head h2 { letter-spacing: .2px; }
+  .scene-section-head p {
+    display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .scene-section-head .note b { color: var(--oceanic); font-weight: 600; }
+  .scene-section-head .note .sep { color: #B3B5C5; }
+
+  @media (max-width: 1080px) { .values { grid-template-columns: 1fr; } }
+
+  /* ============ 场景需求：场景库筛选结果清单 ============ */
+  .scope {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    padding: 14px 30px 0; font-size: 12px; color: var(--ink-3);
+  }
+  .scope .sk2 { color: var(--ink-4); }
+  .scope .pill {
+    padding: 3px 9px; border-radius: 6px; font-size: 11.5px;
+    background: #F2F2F6; color: var(--ink-2);
+  }
+  .scope .pill.on { background: var(--horizon-tint); color: var(--oceanic); font-weight: 500; }
+
+  .subtabs {
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px;
+    padding: 16px 30px; border-bottom: 1px solid var(--line-2);
+  }
+  .scene-sticky-sentinel { height: 1px; margin: 0; pointer-events: none; }
+  .scene-sticky {
+    position: sticky; top: 0; z-index: 8;
+    background: var(--surface);
+    box-shadow: none;
+  }
+  .scene-sticky.is-stuck {
+    box-shadow: 0 8px 16px -12px rgba(0, 1, 17, .18);
+  }
+  #productSticky .scene-section-head {
+    padding-top: 16px; padding-bottom: 0;
+  }
+  #productSticky #famTabs {
+    padding-top: 10px;
+  }
+  .pgroup { scroll-margin-top: var(--product-sticky-h, 88px); }
+  #scenePosTabs {
+    padding-left: 30px; padding-right: 30px;
+  }
+  .scene-caps {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding: 10px 30px 10px;
+    background: var(--surface);
+  }
+  .scene-caps[hidden] { display: none; }
+  .scene-cap {
+    appearance: none; cursor: pointer; font-family: inherit;
+    border: 0; border-radius: 999px;
+    padding: 5px 12px;
+    font-size: 12px; font-weight: 500; color: var(--ink-2);
+    background: #F2F2F6;
+    transition: background .12s, color .12s;
+  }
+  .scene-cap:hover { background: #E8E8EE; }
+  .scene-cap.is-on {
+    color: var(--oceanic);
+    background: var(--horizon-tint);
+  }
+  .scene-cap.is-on:hover { background: var(--horizon-line); }
+  .sgroup { scroll-margin-top: var(--scene-sticky-h, 108px); }
+  .subtab {
+    appearance: none; cursor: pointer; font-family: inherit;
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;
+    min-width: 0; min-height: 88px; gap: 10px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 12px 14px; text-align: left;
+    font-size: 13px; font-weight: 600; color: var(--ink-3);
+    transition: color .16s, border-color .16s, background .16s;
+  }
+  .subtab-top {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; gap: 8px;
+  }
+  .subtab-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 8px;
+    color: var(--horizon); background: var(--horizon-tint);
+    transition: color .16s, background .16s;
+  }
+  .subtab-icon svg { width: 18px; height: 18px; display: block; }
+  .subtab .cnt {
+    font-size: 21px; font-weight: 700; line-height: 1;
+    font-variant-numeric: tabular-nums; color: var(--ink-3);
+    background: transparent; padding: 0; border-radius: 0;
+  }
+  .subtab:hover { color: var(--ink); border-color: var(--horizon-line); background: #FAFAFF; }
+  .subtab:hover .subtab-icon {
+    color: #fff; background: var(--horizon);
+  }
+  .subtab:focus-visible {
+    outline: 2px solid var(--horizon); outline-offset: 3px;
+  }
+  .subtab[aria-selected="true"] {
+    color: var(--oceanic); font-weight: 700;
+    border-color: var(--horizon); background: var(--horizon-tint);
+  }
+  .subtab[aria-selected="true"] .subtab-icon {
+    color: #fff; background: var(--horizon);
+  }
+  .subtab[aria-selected="true"] .cnt { color: var(--oceanic); }
+
+  .slist { padding: 4px 30px 26px; }
+  .sgroup[hidden] { display: none; }
+  .sgroup-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 20px 0 6px; font-size: 12px; font-weight: 600;
+    letter-spacing: .8px; color: var(--oceanic);
+  }
+  .sgroup-head .cnt,
+  .sgroup-head .rule,
+  .pgroup-head .cnt,
+  .pgroup-head .rule,
+  .pblock-head .cnt,
+  .pblock-head .rule { display: none; }
+  .sgroup-head .cnt { font-weight: 500; color: var(--ink-4); letter-spacing: 0; }
+  .sgroup-head .rule { flex: 1; height: 1px; background: var(--line-2); }
+  .scene-row {
+    display: grid; grid-template-columns: 208px minmax(0, 1fr);
+    gap: 18px; align-items: start;
+    padding: 16px 10px; border-radius: 8px;
+    border-top: 1px solid var(--line-2);
+  }
+  .scene-row[hidden] { display: none; }
+  .sgroup .scene-row:first-of-type { border-top: 0; }
+  .scene-row:hover { background: #FAFAFC; }
+  /* 图片与右侧内容等高：标题顶部 → 需求洞察框底部 */
+  /* 顶部下移半行距，使图片上沿与标题文字的视觉顶部齐平；高度交给 stretch 以扣除该边距 */
+  .sboard-wrap {
+    position: relative; width: 100%;
+    align-self: stretch; min-height: 0;
+    margin-top: 4px;
+  }
+  .sboard {
+    width: 100%; align-self: stretch; display: block;
+    object-fit: cover; border-radius: 8px;
+    background: #F0F0F4;
+    margin-top: 4px;
+  }
+  .sboard-wrap .sboard { height: 100%; align-self: auto; margin-top: 0; }
+  .prio {
+    position: absolute; top: 8px; left: 8px; z-index: 1;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .4px;
+    color: #fff; background: var(--horizon);
+    padding: 3px 8px; border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.18);
+  }
+  .stitle-row {
+    display: flex; align-items: baseline; gap: 12px;
+    justify-content: space-between; flex-wrap: wrap;
+  }
+  .stitle { margin: 0; font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.5; }
+  .sprod {
+    flex: none; font-size: 10.5px; font-weight: 500; letter-spacing: .3px;
+    padding: 3px 9px; border-radius: 5px;
+    background: var(--horizon-tint); color: var(--oceanic);
+  }
+  .sprod.soft { background: #F2F2F6; color: var(--ink-3); }
+  .stags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .stags .tag {
+    font-size: 10.5px; color: var(--ink-3); letter-spacing: .2px;
+    padding: 3px 9px; border-radius: 5px; background: #F2F2F6;
+  }
+
+  /* 正文保留原文换行；段间距与行间距一致（<br> 换行 + p 无外边距） */
+  .stext { position: relative; margin-top: 5px; font-size: 12.5px; line-height: 1.75; color: var(--ink-2); }
+  .stext p { margin: 0; }
+  .scene-row[data-expanded="false"] .stext p {
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .smore {
+    appearance: none; border: 0; cursor: pointer;
+    font-family: inherit; font-size: 12.5px; font-weight: 500; letter-spacing: .3px;
+    color: var(--horizon); line-height: 1.75;
+  }
+  .smore:hover { color: var(--oceanic); }
+  .smore[hidden] { display: none !important; }
+  /* 折叠态：贴在第三行末端；展开态：跟在正文末尾 */
+  .scene-row[data-expanded="false"] .smore {
+    position: absolute; right: 0; bottom: 0;
+    padding: 0 0 0 40px;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, #FFFFFF 38%, #FFFFFF 100%);
+  }
+  .scene-row:hover[data-expanded="false"] .smore {
+    background: linear-gradient(90deg, rgba(250,250,252,0) 0%, #FAFAFC 38%, #FAFAFC 100%);
+  }
+  .scene-row[data-expanded="true"] .stext p { display: inline; }
+  .scene-row[data-expanded="true"] .smore {
+    display: inline; position: static; padding: 0; margin-left: 4px;
+    background: none; vertical-align: baseline;
+  }
+
+  .spair { margin-top: 7px; }
+  .sbox { border-radius: 8px; padding: 10px 13px; background: #F5F5F8; }
+  .sbox b {
+    display: block; font-size: 10.5px; font-weight: 600; letter-spacing: 1px;
+    color: var(--ink-4); margin-bottom: 4px;
+  }
+  .sbox p { margin: 0; font-size: 12px; line-height: 1.75; color: var(--ink-2); }
+  .sbox.insight { background: var(--horizon-tint); }
+  .sbox.insight b { color: var(--oceanic); }
+
+  @media (max-width: 1080px) {
+    .spair { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--surface); border-radius: 10px; border: 1px solid var(--line);
+  }
+  .card-head {
+    display: flex; align-items: center; gap: 14px;
+    padding: 22px 30px 0; flex-wrap: wrap;
+  }
+  .card-head h2 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: .4px; }
+  .card-head .note { font-size: 12px; color: var(--ink-3); }
+
+  .copy-btn {
+    margin-left: auto; display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; padding: 0; border-radius: 7px; cursor: pointer;
+    border: 1px solid var(--line); background: var(--surface);
+    color: var(--ink-2);
+    transition: background .16s, border-color .16s, color .16s;
+  }
+  .copy-btn:hover { background: var(--horizon-tint); border-color: var(--horizon-line); color: var(--horizon); }
+  .copy-btn:active { transform: translateY(1px); }
+  .copy-btn[data-state="busy"] { color: var(--ink-4); cursor: progress; }
+  .copy-btn[data-state="done"] { background: #EDF6F0; border-color: #C4E0CE; color: #2E6B48; }
+  .copy-btn[data-state="fail"] { background: #FBF0EE; border-color: #E9C6BF; color: #A2452F; }
+  .copy-btn svg { width: 14px; height: 14px; display: block; }
+
+  /* 标题下的定位收敛：单一浅品牌色容器，购车需求在上、座舱策略在下 */
+  .brief-wrap { padding: 16px 30px 4px; }
+  .brief { background: var(--horizon-tint); border-radius: 8px; padding: 16px 18px; }
+  .brief .bt {
+    font-size: 12px; font-weight: 600; letter-spacing: 1px;
+    color: var(--oceanic); margin-bottom: 9px;
+  }
+  .brief ul { margin: 0; padding: 0; list-style: none; }
+  .brief li {
+    position: relative; padding-left: 14px; margin-bottom: 5px;
+    font-size: 13px; line-height: 1.78; color: var(--ink-2);
+  }
+  .brief li:last-child { margin-bottom: 0; }
+  .brief li::before {
+    content: ''; position: absolute; left: 2px; top: 10px;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--tailwind);
+  }
+  .brief .bstrategy {
+    margin-top: 14px; padding-top: 13px;
+    border-top: 1px solid var(--horizon-line);
+  }
+  .brief .bstrategy .bt { color: var(--oceanic); margin-bottom: 6px; }
+  .brief .bstrategy p {
+    margin: 0; font-size: 12.5px; line-height: 1.8; color: var(--ink-2);
+  }
+
+  .chart-wrap { padding: 6px 20px 0; position: relative; }
+  svg { display: block; width: 100%; height: auto; }
+  .ax-label { font-size: 12.5px; fill: var(--ink-2); font-weight: 500; letter-spacing: 1px; }
+  .ax-tick  { font-size: 11px; fill: var(--ink-4); }
+  .zone-tag { font-size: 13px; font-weight: 600; letter-spacing: 3px; }
+  .zone-sub { font-size: 10.5px; fill: var(--ink-4); }
+
+  .m8-1 { font-size: 12.5px; font-weight: 600; fill: var(--ink); }
+  .m8-2 { font-size: 10.5px; fill: var(--ink-3); }
+  .rv-1 { font-size: 11px; font-weight: 500; fill: #8A8B95; }
+  .rv-2 { font-size: 10px; fill: #A9AAB3; }
+  .legend-txt { font-size: 11px; fill: var(--ink-2); }
+  .legend-sm { font-size: 9.5px; fill: var(--ink-4); }
+  .legend-hint { font-size: 10.5px; fill: var(--ink-4); }
+
+  /* 圆点 hover：默认只显示车名，价格/销量进浮层；延伸线一并高亮 */
+  .chart-wrap .dot { cursor: pointer; }
+  .chart-wrap .dot .hit { fill: transparent; stroke: none; }
+  .chart-wrap .dot .spill-hit {
+    fill: none; stroke: transparent; stroke-width: 14; stroke-linecap: round;
+  }
+  .chart-wrap .dot .spill-line {
+    fill: none; stroke-linecap: round;
+    transition: stroke .12s ease, stroke-width .12s ease, opacity .12s ease;
+  }
+  .chart-wrap .dot .spill-end {
+    transition: fill .12s ease, r .12s ease, filter .12s ease;
+  }
+  .chart-wrap .dot .spill-line.rv { stroke: #C9CAD3; stroke-width: 0.8; }
+  .chart-wrap .dot .spill-end.rv { fill: #C9CAD3; }
+  .chart-wrap .dot .spill-line.m8 { stroke: #434BFF; stroke-width: 0.9; opacity: .55; }
+  .chart-wrap .dot .spill-end.m8 { fill: #9596E2; }
+  .chart-wrap .dot .mark-m8 { transition: stroke-width .12s ease, filter .12s ease; }
+  .chart-wrap .dot .mark-rv { transition: stroke .12s ease, stroke-width .12s ease, filter .12s ease; }
+  .chart-wrap .dot.is-hot .mark-m8 {
+    stroke-width: 2.6;
+    filter: drop-shadow(0 0 4px rgba(67, 75, 255, .35));
+  }
+  .chart-wrap .dot.is-hot .mark-rv {
+    stroke: #8A8B95; stroke-width: 2.1;
+    filter: drop-shadow(0 0 3px rgba(0, 1, 17, .12));
+  }
+  .chart-wrap .dot.is-hot .spill-line.rv {
+    stroke: #8A8B95; stroke-width: 1.6;
+  }
+  .chart-wrap .dot.is-hot .spill-end.rv {
+    fill: #8A8B95;
+    filter: drop-shadow(0 0 2px rgba(0, 1, 17, .12));
+  }
+  .chart-wrap .dot.is-hot .spill-line.m8 {
+    stroke: #273CD9; stroke-width: 1.7; opacity: 1;
+  }
+  .chart-wrap .dot.is-hot .spill-end.m8 {
+    fill: #434BFF;
+    filter: drop-shadow(0 0 3px rgba(67, 75, 255, .35));
+  }
+  .chart-wrap .dot.is-hot .m8-1 { fill: #273CD9; }
+  .chart-wrap .dot.is-hot .rv-1 { fill: #5C5D68; }
+
+  .chart-tip {
+    position: absolute; z-index: 6; min-width: 172px; max-width: 240px;
+    padding: 10px 12px; border-radius: 8px;
+    background: #fff; border: 1px solid var(--line);
+    box-shadow: 0 10px 28px rgba(0, 1, 17, .12);
+    pointer-events: none; opacity: 0;
+    transform: translateY(4px);
+    transition: opacity .12s ease, transform .12s ease;
+  }
+  .chart-tip.show { opacity: 1; transform: translateY(0); }
+  .chart-tip-name {
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    margin-bottom: 7px; letter-spacing: .2px;
+  }
+  .chart-tip-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 14px; font-size: 11.5px; color: var(--ink-4);
+  }
+  .chart-tip-row + .chart-tip-row { margin-top: 4px; }
+  .chart-tip-row b {
+    font-weight: 600; color: var(--ink-2);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+
+  .insight-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    padding: 20px 30px 16px; margin-top: 16px; border-top: 1px solid var(--line-2);
+  }
+  .ins {
+    background: var(--surface); border-radius: 10px; border: 1px solid var(--line);
+    padding: 0 0 20px; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .ins .top { padding: 20px 22px 0; }
+  /* 卡片统一用品牌 Token，蓝 / 黄 / 紫仅用于「商务 / 家用 / 悦己」的数据编码 */
+  .ins .tier {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 1.6px;
+    margin-bottom: 8px; color: var(--ink-4);
+  }
+  .ins h3 { margin: 0 0 12px; font-size: 16.5px; font-weight: 600; color: var(--ink); }
+
+  /* 指导价 / 销量：标签列对齐，占比另配一条进度条 */
+  .ins .stats { margin-bottom: 15px; }
+  .ins .srow { display: grid; grid-template-columns: 48px 1fr; align-items: baseline; column-gap: 6px; }
+  .ins .srow + .srow { margin-top: 8px; }
+  .sk { font-size: 11px; color: var(--ink-4); letter-spacing: .5px; white-space: nowrap; }
+  .sk::after { content: '：'; }
+  .sprice {
+    font-size: 15px; font-weight: 600; color: var(--ink);
+    letter-spacing: -.2px; font-variant-numeric: tabular-nums;
+  }
+  .sprice em { font-size: 11.5px; font-weight: 500; font-style: normal; color: var(--ink-4); margin-left: 2px; }
+  .ssales { font-size: 12.5px; color: var(--ink-4); font-variant-numeric: tabular-nums; }
+  .ssales b { font-size: 15px; font-weight: 600; color: var(--oceanic); margin-left: 1px; }
+  .ssales em { font-style: normal; margin-left: 3px; }
+  .sbar { margin-top: 9px; height: 4px; border-radius: 2px; background: var(--line-2); overflow: hidden; }
+  .sbar i { display: block; height: 100%; border-radius: 2px; background: var(--horizon); }
+
+  /* 需求洞察：独立浅品牌色容器 */
+  .ins .claim {
+    padding: 12px 14px; border-radius: 8px; margin-bottom: 4px;
+    background: var(--horizon-tint);
+  }
+  .ins .claim b {
+    display: block; font-size: 13.5px; font-weight: 600; line-height: 1.55; color: var(--oceanic);
+  }
+  .ins .claim span {
+    display: block; margin-top: 5px; font-size: 12px; font-weight: 400;
+    line-height: 1.7; color: var(--ink-2);
+  }
+  .ins .mix { display: flex; gap: 6px; padding: 14px 22px 2px; flex-wrap: wrap; }
+  .ins .chip {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .5px;
+    padding: 4px 10px; border-radius: 6px; color: #fff;
+  }
+  .chip-biz  { background: var(--biz); }
+  .chip-home { background: var(--home); }
+  .chip-self { background: var(--self); }
+  /* 次要定位：浅色底 + 对应色虚线边框 */
+  .chip-soft { border: 1px dashed; }
+  .chip-soft.chip-biz  { background: var(--biz-soft)  !important; color: #2F6BAE !important; border-color: #A6C8EC; }
+  .chip-soft.chip-home { background: var(--home-soft) !important; color: #9C6E20 !important; border-color: #DCBE86; }
+  .chip-soft.chip-self { background: var(--self-soft) !important; color: #63529E !important; border-color: #BCAFE0; }
+
+  .ins dl { margin: 8px 0 0; padding: 0 22px; font-size: 12.5px; line-height: 1.78; }
+  .ins dt {
+    color: var(--ink-4); font-size: 10.5px; letter-spacing: 1px;
+    margin-top: 12px; font-weight: 600;
+  }
+  .ins dd { margin: 3px 0 0; color: var(--ink-2); }
+  .ins dd b { color: var(--ink); font-weight: 600; }
+
+  .foot {
+    margin: 0 30px 24px; font-size: 11.5px; line-height: 1.9; color: var(--ink-3);
+    padding: 16px 18px; background: #F5F5F8; border-radius: 8px;
+  }
+  .foot .row { margin: 0 0 6px; }
+  .foot .row:last-child { margin-bottom: 0; }
+  .foot .row-nowrap { white-space: nowrap; }
+  .foot b { color: var(--ink-2); font-weight: 600; }
+  .foot a { color: var(--oceanic); text-decoration: underline; text-underline-offset: 2px; }
+
+  @media (max-width: 1080px) { .insight-grid { grid-template-columns: 1fr; } }
+  /* ============ 产品预研：体验定义（沿用场景需求「用户价值」样式） ============ */
+  #productCard .values { padding-bottom: 26px; }
+  #productCard .vcard h4 { font-size: 15px; margin-bottom: 9px; }
+
+
+  .pblock[hidden] { display: none; }
+  .pblock-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 18px 0 4px; font-size: 13px; font-weight: 600; color: var(--ink);
+  }
+  .pblock-head .dot {
+    width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+  }
+  .pblock-head .dot.ready { background: var(--horizon); }
+  .pblock-head .dot.incubating { background: var(--tailwind); }
+  .pblock-head .cnt { font-size: 11.5px; font-weight: 500; color: var(--ink-4); }
+  .pblock-head .rule { flex: 1; height: 1px; background: var(--line-2); }
+  .pgroup-head .pno.soft {
+    color: #63529E; background: var(--self-soft);
+  }
+  /* ============ 产品预研：解决方案清单 ============ */
+  .plist { padding: 4px 30px 8px; }
+  .pgroup[hidden] { display: none; }
+  .pgroup-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 22px 0 8px; font-size: 12px; font-weight: 600;
+    letter-spacing: .8px; color: var(--oceanic);
+  }
+  .pgroup-head .pno {
+    font-size: 10.5px; font-weight: 600; letter-spacing: .5px;
+    color: var(--horizon); background: var(--horizon-tint);
+    padding: 2px 7px; border-radius: 5px;
+  }
+  .pgroup-head .cnt { font-weight: 500; color: var(--ink-4); letter-spacing: 0; }
+  .pgroup-head .rule { flex: 1; height: 1px; background: var(--line-2); }
+
+  .prow {
+    display: flex; flex-direction: column; gap: 12px;
+    padding: 18px 10px 16px; border-top: 1px solid var(--line-2); border-radius: 8px;
+  }
+  .pgroup .prow:first-of-type { border-top: 0; }
+  .prow:hover { background: #FAFAFC; }
+  .pname { margin: 0; font-size: 15px; font-weight: 600; color: var(--ink); line-height: 1.45; }
+  .pchips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pfield.meta { align-items: center; }
+  .pchip {
+    font-size: 11px; padding: 2px 8px; border-radius: 999px;
+    background: #F0F0F4; color: var(--ink-3);
+  }
+  .pchip.plat { background: #F0F0F4; color: var(--ink-3); }
+
+  .pright { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .pfield { display: grid; grid-template-columns: 74px minmax(0, 1fr); gap: 14px; align-items: baseline; }
+  .pk {
+    font-size: 11px; font-weight: 600; letter-spacing: .6px; color: var(--ink-4);
+    display: inline-flex; align-items: baseline; gap: 5px; white-space: nowrap;
+  }
+  .pk em { font-style: normal; font-weight: 600; color: var(--oceanic); font-variant-numeric: tabular-nums; }
+  .pk .hvn { display: none; }
+  .pv p { margin: 0; font-size: 12.5px; line-height: 1.8; color: var(--ink-2); }
+  .pv p.na { color: var(--ink-4); }
+
+  .ilinks { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .ilink {
+    position: relative; padding-left: 14px;
+    font-size: 12.5px; line-height: 1.75; color: var(--ink-2);
+  }
+  .ilink::before {
+    content: ""; position: absolute; left: 0; top: .72em;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--ink-4);
+  }
+  .iinsight { color: var(--ink-2); }
+  .isep { color: var(--ink-4); margin: 0 6px; }
+  .ilink .ptag {
+    display: inline-flex; align-items: center; vertical-align: baseline;
+    padding: 1px 8px; border-radius: 999px; border: 0;
+    background: #F0F0F4; color: var(--ink-3); font-weight: 500; font-size: 11.5px;
+    text-decoration: none; line-height: 1.55;
+  }
+  .ilink .ptag:hover { background: #E8E8EE; color: var(--ink-2); }
+  .imore {
+    appearance: none; cursor: pointer; font-family: inherit; align-self: flex-start;
+    margin-top: 2px; padding: 0; border: 0; background: none;
+    font-size: 12px; font-weight: 500; color: var(--horizon);
+  }
+  .imore:hover { color: var(--oceanic); }
+  .imore-list { display: flex; flex-direction: column; gap: 8px; }
+  .imore-list[hidden] { display: none; }
+  .ptags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ptag {
+    appearance: none; font-family: inherit; cursor: pointer; text-align: left;
+    font-size: 11.5px; line-height: 1.6; padding: 3px 9px; border-radius: 6px;
+    background: #F6F6F9; color: var(--ink-3); border: 1px solid transparent;
+  }
+  .ptag b { font-weight: 500; color: var(--ink-4); margin-right: 6px; font-variant-numeric: tabular-nums; }
+  .ptag.hv { background: var(--horizon-tint); color: var(--ink-2); border-color: var(--horizon-line); }
+  .ptag.hv b { color: var(--horizon); }
+
+  /* ============ 用户故事详情弹窗（对齐场景库 Demo） ============ */
+
+  .smask {
+    position: fixed; inset: 0; z-index: 60; display: none;
+    align-items: center; justify-content: center; padding: 3vh 3vw;
+    background: rgba(0,1,17,.62);
+    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  }
+  .smask.open { display: flex; }
+  .smodal {
+    width: min(1200px, 94vw); height: min(92vh, 940px);
+    background: var(--surface); border-radius: 12px;
+    box-shadow: 0 30px 100px rgba(0,1,17,.32);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .smodal-head {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 20px 24px; border-bottom: 1px solid var(--line-2); background: #fff;
+  }
+  .smodal-head h3 { margin: 0 0 10px; font-size: 23px; font-weight: 600; letter-spacing: -.02em; }
+  .smodal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .smodal-tags .tag {
+    padding: 4px 9px; border-radius: 999px; font-size: 12px; font-weight: 500;
+    background: #F0F0F4; color: var(--ink-3);
+  }
+  .smodal-close {
+    margin-left: auto; border: 0; cursor: pointer; font-family: inherit;
+    width: 36px; height: 36px; border-radius: 7px;
+    background: #F1F1F5; color: #676879; font-size: 18px; line-height: 1;
+  }
+  .smodal-close:hover { background: var(--horizon-tint); color: var(--horizon); }
+  .smodal-body {
+    overflow: auto; padding: 24px 26px 36px; background: #FAFAFC;
+    display: grid; grid-template-columns: minmax(320px, 400px) minmax(0, 1fr);
+    gap: 28px; align-items: start;
+  }
+  .smodal-gallery img {
+    display: block; width: 100%; height: auto; aspect-ratio: 4/3;
+    object-fit: cover; border-radius: 8px; background: var(--line-2);
+  }
+  .smodal-side { margin-top: 16px; padding: 16px; background: #fff;
+    border: 1px solid var(--line-2); border-radius: 9px; }
+  .smodal-side h4 { margin: 0 0 12px; font-size: 14px; font-weight: 600; color: var(--oceanic); }
+  .smeta { display: flex; flex-direction: column; gap: 10px; }
+  .smeta-row { display: flex; align-items: center; gap: 12px; font-size: 13px; line-height: 1.35; }
+  .smeta-k { min-width: 68px; color: #777885; }
+  .smeta-v {
+    display: inline-flex; align-items: center; padding: 6px 10px; border-radius: 999px;
+    background: #F3F3F7; border: 1px solid var(--line-2); color: var(--ink-2);
+  }
+  .ssections { display: flex; flex-direction: column; gap: 18px; }
+  .sblock { padding: 18px 20px; background: #fff; border: 1px solid var(--line-2); border-radius: 9px; }
+  .sblock h4 { margin: 0 0 16px; font-size: 15px; font-weight: 600; color: var(--oceanic); }
+  .skv { display: grid; grid-template-columns: 126px 1fr; gap: 16px; font-size: 14.5px; }
+  .skv .k { color: #777885; }
+  .skv .v { line-height: 1.7; color: var(--ink-2); }
+  .skv .v.emptyv { color: var(--ink-4); }
+  .sdetail-story p { margin: 0 0 .5em; line-height: 1.7; }
+  .sdetail-story p:last-child { margin-bottom: 0; }
+  .spill {
+    display: inline-flex; align-items: center; padding: 5px 10px; border-radius: 999px;
+    border: 1px solid var(--line-2); background: #F0F0F3; color: #5F6070;
+    font-size: 13px; font-weight: 500; line-height: 1.35; white-space: nowrap;
+  }
+  .spill.must { background: #E9ECFF; border-color: #DDE1FF; color: #3037B8; }
+  .spill.expected { background: #FFF0E5; border-color: #F6DEC9; color: #A55F2E; }
+  .spill.attractive { background: #F0ECFF; border-color: #E3DCFF; color: #6654A7; }
+  .spill.theme { background: var(--horizon-tint); border-color: rgba(67,75,255,.12); color: var(--oceanic); }
+  .sincubating {
+    display: flex; align-items: center; justify-content: center; min-height: 72px;
+    color: var(--ink-4); font-size: 15px; font-weight: 500; letter-spacing: .04em;
+  }
+  @media (max-width: 980px) { .smodal-body { grid-template-columns: 1fr; } }
+
+  /* 返回顶部：固定在视口右下，下滑超过一屏后出现 */
+  .back-top {
+    position: fixed; right: 28px; bottom: 32px; z-index: 40;
+    width: 44px; height: 44px; padding: 0; margin: 0;
+    border-radius: 50%; border: 1px solid var(--line);
+    background: var(--surface); color: var(--horizon);
+    box-shadow: 0 4px 16px rgba(0,1,17,.08);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; appearance: none; font-family: inherit;
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity .2s ease, visibility .2s ease, transform .2s ease,
+                background .16s, border-color .16s, color .16s, box-shadow .16s;
+  }
+  .back-top.is-on {
+    opacity: 1; visibility: visible; pointer-events: auto;
+    transform: translateY(0);
+  }
+  .back-top:hover {
+    background: var(--horizon-tint); border-color: var(--horizon-line);
+    color: var(--oceanic); box-shadow: 0 6px 20px rgba(67,75,255,.16);
+  }
+  .back-top:focus-visible {
+    outline: 2px solid var(--horizon); outline-offset: 2px;
+  }
+  .back-top svg { width: 18px; height: 18px; display: block; }
+  @media (max-width: 720px) {
+    .back-top { right: 16px; bottom: 20px; width: 40px; height: 40px; }
+  }
+
+  /* ============ 产品预研 / 落地量产：页面框架 ============ */
+  .product-shell {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: clip;
+  }
+  .product-top {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    padding: 22px 30px 20px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .product-top-copy { min-width: 0; }
+  .product-top h2 {
+    margin: 0;
+    font-size: 22px; font-weight: 700; letter-spacing: .35px;
+    color: var(--ink);
+  }
+  .product-top p {
+    margin: 7px 0 0;
+    font-size: 13px; font-weight: 600; line-height: 1.7; color: var(--ink-3);
+  }
+  .product-subpanel[hidden] { display: none; }
+
+  /* ============ 落地量产：已交付产品，按产品族筛选 ============ */
+  .mass-wrap { padding: 0 30px 30px; background: #F7F7FA; }
+  .mass-nav {
+    position: sticky; top: 0; z-index: 8;
+    padding: 18px 0 16px; background: #F7F7FA;
+    border-bottom: 1px solid var(--line-2);
+    box-shadow: 0 10px 16px -16px rgba(0, 1, 17, .2);
+  }
+  .mass-families { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 9px; }
+  .mass-family-btn {
+    appearance: none; cursor: pointer; font-family: inherit; text-align: left;
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 10px;
+    min-width: 0; min-height: 88px; padding: 12px 14px;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--surface); font-size: 13px; font-weight: 600; color: var(--ink-3);
+    transition: color .16s, border-color .16s, background .16s;
+  }
+  .mass-family-top {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; gap: 8px;
+  }
+  .mass-family-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 8px;
+    color: var(--horizon); background: var(--horizon-tint);
+    transition: color .16s, background .16s;
+  }
+  .mass-family-icon svg { width: 18px; height: 18px; display: block; }
+  .mass-family-count { font-size: 21px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+  .mass-family-count small { margin-left: 4px; font-size: 10px; font-weight: 400; color: var(--ink-4); }
+  .mass-family-btn:hover { color: var(--oceanic); border-color: var(--horizon-line); background: #FAFAFF; }
+  .mass-family-btn:hover .mass-family-icon {
+    color: #fff; background: var(--horizon);
+  }
+  .mass-family-btn[aria-pressed="true"] {
+    color: var(--oceanic); border-color: var(--horizon); background: var(--horizon-tint);
+  }
+  .mass-family-btn[aria-pressed="true"] .mass-family-icon {
+    color: #fff; background: var(--horizon);
+  }
+  .mass-family-btn[aria-pressed="true"] .mass-family-count { color: var(--horizon); }
+  .mass-family-btn:focus-visible, .mass-card-link:focus-visible {
+    outline: 2px solid var(--horizon); outline-offset: 3px;
+  }
+  .mass-results { scroll-margin-top: var(--mass-sticky-h, 170px); }
+  .mass-group { margin-top: 24px; }
+  .mass-group[hidden] { display: none; }
+  .mass-group:first-of-type { margin-top: 18px; }
+  .mass-group-head { display: flex; align-items: center; gap: 9px; }
+  .mass-group-head h3 { margin: 0; color: var(--oceanic); font-size: 15px; font-weight: 600; }
+  .mass-group-label { color: var(--ink-4); font-size: 11px; font-weight: 400; }
+  .mass-group-label::after { content: "/"; margin-left: 9px; color: #CDCED8; }
+  .mass-group-intro { margin: 6px 0 12px; font-size: 12px; line-height: 1.7; color: var(--ink-3); }
+  .mass-product-list { display: grid; gap: 14px; }
+  .mass-product { min-width: 0; }
+  .mass-card-link {
+    position: relative; display: flex; align-items: flex-start; gap: 20px;
+    padding: 16px; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--surface); color: inherit; text-decoration: none;
+    transition: box-shadow .16s, border-color .16s;
+  }
+  .mass-card-link:hover { border-color: #C3C5D8; box-shadow: 0 10px 26px rgba(0, 1, 17, .06); }
+  .mass-cover {
+    position: relative; flex: 0 0 280px; overflow: hidden;
+    aspect-ratio: 16 / 9; border-radius: 7px; background: var(--line-2);
+  }
+  .mass-cover img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .mass-demo-badge {
+    position: absolute; bottom: 10px; left: 10px; padding: 3px 9px; border-radius: 999px;
+    background: rgba(0, 1, 17, .55); color: #fff; font-size: 10.5px; line-height: 1.5;
+    backdrop-filter: blur(2px);
+  }
+  .mass-card-body { display: flex; flex: 1; flex-direction: column; gap: 9px; min-width: 0; }
+  .mass-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .mass-card-head h4 { margin: 0; font-size: 17px; font-weight: 600; line-height: 1.5; }
+  .mass-stage {
+    flex: none; padding: 3px 9px; border-radius: 6px;
+    background: var(--horizon-tint); color: var(--oceanic); font-size: 10.5px; line-height: 1.5;
+  }
+  .mass-tags, .mass-scene-chips, .mass-models { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+  .mass-tag { padding: 2px 8px; border-radius: 999px; background: #F1F1F5; color: var(--ink-3); font-size: 10.5px; line-height: 1.5; }
+  .mass-description { margin: 0; color: var(--ink-2); font-size: 12.5px; line-height: 1.8; }
+  .mass-scenes { padding: 10px 12px; border-radius: 7px; background: var(--horizon-tint); }
+  .mass-scenes-title { margin-bottom: 6px; font-size: 10.5px; font-weight: 600; color: var(--horizon); }
+  .mass-scene-chip {
+    padding: 2px 8px; border: 1px solid var(--horizon-line); border-radius: 5px;
+    background: var(--surface); color: var(--oceanic); font-size: 10.5px; line-height: 1.5;
+  }
+  .mass-scene-more { background: transparent; border-color: #D2D3DF; color: var(--ink-3); }
+  .mass-card-foot {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 7px 10px;
+    padding-top: 1px; color: var(--ink-3); font-size: 10.5px; line-height: 1.6;
+  }
+  .mass-model {
+    padding: 1px 6px; border: 1px solid var(--line); border-radius: 5px;
+    color: var(--ink-2); font-size: 10px; line-height: 1.5;
+  }
+  .mass-foot-item { display: inline-flex; align-items: center; gap: 10px; }
+  .mass-foot-item::before { content: ""; width: 3px; height: 3px; border-radius: 50%; background: #C4C5D0; }
+  .mass-detail-link { margin-left: auto; white-space: nowrap; color: var(--oceanic); }
+  @media (max-width: 1080px) {
+    .mass-families { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .mass-family-btn { flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; }
+    .mass-family-count { font-size: 20px; }
+    .mass-cover { flex-basis: 240px; }
+  }
+  @media (max-width: 780px) {
+    .mass-card-link { flex-direction: column; gap: 14px; }
+    .mass-cover { flex: none; width: 100%; }
+    .mass-card-body { width: 100%; }
+  }
+
+  /* ============ 产品预研：Agent Tab 与逐条方案配图 ============ */
+  .concept-wrap {
+    padding: 24px 30px 30px;
+    background:
+      radial-gradient(circle at 96% 8%, rgba(149, 150, 226, .12), transparent 28%),
+      linear-gradient(180deg, #F7F8FC 0%, #F5F5F9 100%);
+  }
+  .concept-rail {
+    position: sticky; top: 0; z-index: 8;
+    display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px;
+    margin-top: -14px; padding: 14px 0 20px;
+    background: transparent;
+  }
+  .concept-card {
+    appearance: none; cursor: pointer; font-family: inherit;
+    display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;
+    min-width: 0; min-height: 88px; gap: 10px; padding: 12px 14px;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--surface);
+    text-align: left; font-size: 13px; font-weight: 600; line-height: 1.5; color: var(--ink-3);
+    transition: border-color .16s, color .16s, background .16s;
+  }
+  .concept-card-top {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; gap: 8px;
+  }
+  .concept-card b {
+    font-size: 10px; font-weight: 500; letter-spacing: 1px;
+    font-variant-numeric: tabular-nums; color: var(--tailwind);
+  }
+  .concept-card-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 8px;
+    color: var(--horizon); background: var(--horizon-tint);
+    transition: color .16s, background .16s;
+  }
+  .concept-card-icon svg { width: 18px; height: 18px; display: block; }
+  .concept-card-name { display: block; position: relative; z-index: 1; }
+  .concept-card:not(:disabled):hover {
+    border-color: var(--horizon-line); background: #FAFAFF; color: var(--oceanic);
+  }
+  .concept-card:not(:disabled):hover .concept-card-icon {
+    color: #fff; background: var(--horizon);
+  }
+  .concept-card[aria-selected="true"] {
+    border-color: var(--horizon); background: var(--horizon-tint); color: var(--oceanic);
+  }
+  .concept-card[aria-selected="true"] b { color: var(--horizon); }
+  .concept-card[aria-selected="true"] .concept-card-icon {
+    color: #fff; background: var(--horizon);
+  }
+  .concept-card:disabled {
+    cursor: not-allowed; opacity: 1; border-color: var(--line-2);
+    background: #F5F5F8; color: var(--ink-4);
+  }
+  .concept-card:disabled b { color: #B6B7C0; }
+  .concept-card:disabled .concept-card-icon {
+    color: #AEB0BA; background: #E6E6EC;
+  }
+  .concept-card:focus-visible { outline: 2px solid var(--horizon); outline-offset: 3px; }
+  .agent-panel[hidden] { display: none; }
+  .agent-panel-heading {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    padding: 10px 2px 14px;
+  }
+  .agent-panel-heading h3 { margin: 0; font-size: 18px; line-height: 1.5; font-weight: 700; }
+  .agent-panel-heading h3 small {
+    margin-left: 7px; font-size: 11px; font-weight: 600; letter-spacing: 1px; color: var(--ink-4);
+  }
+  .concept-matrix {
+    overflow: hidden; border: 1px solid var(--line); border-radius: 10px;
+    background: var(--surface);
+  }
+  .solution-table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+  .solution-table .col-need { width: 18%; }
+  .solution-table .col-copy { width: 46%; }
+  .solution-table .col-image { width: 36%; }
+  .solution-table thead { background: #F0F0F5; border-bottom: 1px solid var(--line); }
+  .solution-table thead th {
+    padding: 12px 20px; text-align: left;
+    font-size: 13px; font-weight: 700; letter-spacing: .6px; color: var(--ink-2);
+  }
+  .solution-table tbody + tbody { border-top: 1px solid var(--line); }
+  .solution-table td { border-top: 1px solid var(--line-2); }
+  .solution-table tbody tr:first-child td { border-top: 0; }
+  .need-name {
+    padding: 22px 18px 22px 20px; vertical-align: top;
+    border-right: 1px solid var(--line-2); background: #FAFAFC;
+    text-align: left; font-size: 15px; font-weight: 700; line-height: 1.7; color: var(--ink);
+  }
+  .solution-copy { padding: 22px 24px 22px 20px; vertical-align: middle; }
+  .solution-copy p {
+    margin: 0; font-size: 15px; font-weight: 600; line-height: 1.85; overflow-wrap: anywhere; color: var(--ink-2);
+  }
+  #agent-care .solution-copy p + p { margin-top: 10px; }
+  .solution-copy strong { font-weight: 600; color: inherit; }
+  .solution-visual { padding: 16px 20px 16px 0; vertical-align: middle; }
+  .need-illustration {
+    appearance: none; cursor: zoom-in; position: relative; display: block;
+    width: 100%; margin: 0; padding: 0; overflow: hidden;
+    border: 1px solid var(--line-2); border-radius: 7px; background: #090F13; color: #fff;
+  }
+  .need-illustration img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 5; }
+  .illustration-zoom {
+    position: absolute; right: 10px; bottom: 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 9px; border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 999px; background: rgba(0, 1, 17, .75);
+    font-family: inherit; font-size: 10px; line-height: 1.4;
+    opacity: 0; transition: opacity .16s; pointer-events: none;
+  }
+  .illustration-zoom svg { width: 12px; height: 12px; }
+  .need-illustration:hover .illustration-zoom,
+  .need-illustration:focus-visible .illustration-zoom { opacity: 1; }
+  .need-illustration:focus-visible { outline: 2px solid var(--horizon); outline-offset: 3px; }
+  .agent-empty {
+    min-height: 350px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; border: 1px dashed var(--line); border-radius: 10px; background: var(--surface);
+  }
+  .agent-empty span { width: 24px; height: 1px; margin-bottom: 5px; background: var(--line); }
+  .agent-empty h3 { margin: 0; font-size: 15px; font-weight: 500; color: var(--ink-2); }
+  .agent-empty p { margin: 0; font-size: 12px; color: var(--ink-4); }
+  .concept-sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+  .concept-image-dialog {
+    width: min(1600px, 96vw); max-width: 96vw; max-height: 94vh;
+    margin: auto; padding: 0; overflow: auto;
+    border: 1px solid rgba(255, 255, 255, .15); border-radius: 12px;
+    background: #090F13; color: #F5F7F4;
+    box-shadow: 0 24px 80px rgba(0, 1, 17, .3);
+  }
+  .concept-image-dialog::backdrop {
+    background: rgba(0, 1, 17, .78);
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  }
+  .concept-image-toolbar {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 12px 16px; border-bottom: 1px solid rgba(255, 255, 255, .1);
+  }
+  .concept-image-toolbar h3 {
+    margin: 0; font-size: 14px; font-weight: 500; line-height: 1.5;
+  }
+  .concept-image-close {
+    appearance: none; flex: none; cursor: pointer;
+    width: 32px; height: 32px; padding: 0; border: 0; border-radius: 6px;
+    background: rgba(255, 255, 255, .09); color: inherit;
+    font-family: inherit; font-size: 22px; line-height: 1;
+  }
+  .concept-image-close:hover { background: rgba(255, 255, 255, .18); }
+  .concept-image-close:focus-visible {
+    outline: 2px solid var(--tailwind); outline-offset: 2px;
+  }
+  .concept-image-preview {
+    display: block; width: 100%; height: auto; max-height: calc(94vh - 62px);
+    object-fit: contain;
+  }
+  .concept-footnote {
+    margin: 14px 2px 0;
+    font-size: 10.5px; line-height: 1.7; color: var(--ink-4);
+  }
+
+  @media (max-width: 980px) {
+    .concept-rail { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .concept-card { min-height: 88px; gap: 10px; }
+    .solution-table .col-need { width: 19%; }
+    .solution-table .col-copy { width: 43%; }
+    .solution-table .col-image { width: 38%; }
+    .solution-copy { padding: 18px 16px; }
+    .solution-visual { padding-right: 14px; }
+    .need-name { padding: 18px 14px; }
+    .solution-table thead th { padding: 12px 14px; }
+  }
+  @media (max-width: 760px) {
+    .agent-panel-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
+    .solution-table, .solution-table tbody, .solution-table tr, .solution-table td { display: block; }
+    .solution-table colgroup, .solution-table thead { display: none; }
+    .solution-table .need-name {
+      display: block; width: 100%; padding: 14px 16px; border-right: 0;
+      border-bottom: 1px solid var(--line-2); background: var(--horizon-tint);
+    }
+    .solution-copy { padding: 16px 16px 10px; }
+    .solution-copy p { font-size: 14px; font-weight: 600; line-height: 1.8; }
+    .solution-visual { padding: 0 16px 18px; }
+    .solution-table td { border-top: 0; }
+    .solution-table tr + tr { border-top: 1px solid var(--line-2); }
+  }
+  @media (max-width: 640px) {
+    body { padding: 22px 12px 48px; }
+    .header { align-items: flex-start; }
+    .brand { width: 100%; flex-wrap: wrap; }
+    .brand h1 {
+      flex: 1 0 100%; width: auto; margin-top: 8px;
+      font-size: 17px; white-space: nowrap;
+    }
+    .brand .logo-divider { display: none; }
+    .tabs { width: 100%; justify-content: space-between; }
+    .tab { flex: 1; justify-content: center; }
+    .product-top { padding: 18px; }
+    #scenePosTabs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 12px 14px; }
+    .subtab { min-height: 80px; padding: 12px; font-size: 12.5px; }
+    .subtab .cnt { font-size: 19px; }
+    .concept-wrap { padding: 14px; }
+    .concept-rail { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding-bottom: 14px; }
+    .concept-card { min-height: 80px; gap: 10px; padding: 12px; font-size: 12.5px; }
+    .mass-wrap { padding: 0 14px 20px; }
+    .mass-nav { padding: 14px 0 12px; }
+    .mass-families { gap: 6px; }
+    .mass-family-btn {
+      flex-direction: column; align-items: flex-start; justify-content: space-between;
+      gap: 10px; min-height: 80px; padding: 12px; font-size: 12.5px;
+    }
+    .mass-family-count { font-size: 19px; }
+    .mass-family-count small { font-size: 9px; margin-left: 3px; }
+    .mass-group-head h3 { font-size: 14px; }
+    .mass-card-link { padding: 12px; }
+    .mass-card-head h4 { font-size: 16px; }
+    .mass-stage { padding: 3px 7px; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ======================= HEADER ======================= -->
+  <div class="header">
+    <div class="brand">
+      <img class="logo-mark" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjQ3MCA0MTUgOTgwIDI1MCIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02NTYuMjE2IDU3Ny41MzhMNzU4LjQzNCA2NDUuNjM3TDcyOS44OTUgNjYwTDY0MC40MTYgNTg3Ljk1OUw2NTYuMjE2IDU3Ny41MzhaTTY5NC4zNjEgNTAyLjY4OVY1MjUuNjE0TDUwNy4xMjcgNjU5LjYzMkw1MTguNTI0IDUyMi42ODZMNTM0Ljc0MyA1MzEuOTU5VjYwOC41MjFMNjk0LjM2MSA1MDIuNjg5Wk00NzYuOTk5IDQ0NS45MDRMNTY5Ljk0OCA1MTUuNjAyTDU1NC4xMjIgNTI3LjkxOUw1MDMuMDA1IDQ5NC4yNjRMNDk0LjQ1NyA2NDguMjMyTDQ3OS44NDggNjMzLjg3MUw0NzYuOTk5IDQ0NS45MDRaTTc0Ny4zMTYgNDMxLjc1Mkw3NjEuOTI0IDQ0Ni4xMjJMNzY0Ljc3MyA2MzIuNTU5TDY3My4wMDcgNTYzLjYxNEw2ODcuNjUyIDU1Mi4wNzRMNzM4Ljc2OSA1ODUuNzMxTDc0Ny4zMTYgNDMxLjc1MlpNNzM0LjY0NiA0MjAuMzZMNzIzLjI0OSA1NTcuMzA4TDcwNy4wMzEgNTQ2LjYxMVY0NzEuNDgyTDU0Ny40MTMgNTc3LjMxM0w1NDcuNDEzIDU1NC4zODJMNzM0LjY0NiA0MjAuMzZaTTUxMS44ODkgNDIwTDYwMS4zNTggNDkyLjAzNUw1ODYuNzM2IDUwMS42OEw0ODQuNTIyIDQzMy41ODJMNTExLjg4OSA0MjBaIiBmaWxsPSIjMzczRUQ4Ii8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMjgyLjk1IDUxOC4xNzZMMTI4Mi45NSA1NjQuNTY4QzEyODIuOTQgNTc1LjYxMyAxMjczLjk5IDU4NC41NjcgMTI2Mi45NCA1ODQuNTY3TDExNTguODYgNTg0LjU2NlY1MTguMTc2SDEyODIuOTVaTTEwNzUuNTcgNTMxLjYwOEwxMDc1LjU4IDU0Mi40TDExMzMuNTggNTQyLjRWNTU3LjU4N0wxMDc1LjU4IDU1Ny41ODhWNTY5LjM3OUwxMTM2Ljc3IDU2OS4zNzhWNTg0LjU2Nkg5OTcuODczVjU2OS4zNzhMMTA2MC4zOSA1NjkuMzc5VjU1Ny41ODhMMTAwMS4wNiA1NTcuNTg3VjU0Mi40TDEwNjAuMzkgNTQyLjRMMTA2MC4zOSA1MzEuNjA4SDEwNzUuNTdaTTk4MS4xNzcgNDM5Ljg4VjQ1NS4wNjdMOTE3Ljc3NyA0NTUuMDY4VjQ2My42NjJMOTE3Ljc3MyA0NjQuMTAzQzkxNy43MjcgNDY2LjY4MSA5MTcuMjY4IDQ2OS4yMDIgOTE2LjQyNCA0NzEuNTkxTDkxNi4xODggNDcyLjI1OEw5NzguNDIyIDQ3Mi4yNTVMOTc4LjA3NSA1NjQuNjMzQzk3OC4wMzMgNTc1LjY0OCA5NjkuMDkyIDU4NC41NTcgOTU4LjA3NyA1ODQuNTU4TDg0MS45NDUgNTg0LjU2N1Y0NzIuMjU1TDg5My45OTYgNDcyLjI1Nkw4OTQuMzA5IDQ3Mi4yNUM4OTguNzQ2IDQ3Mi4wODYgOTAyLjMyNyA0NjguNTcxIDkwMi41NzYgNDY0LjE1NUw5MDIuNTkgNDYzLjY3Nkw5MDIuNTkgNDU1LjA2OEw4MzkuMTkgNDU1LjA2N1Y0MzkuODhIOTgxLjE3N1pNMTM3MC41NCA0ODQuMzY2TDEzNzAuNTQgNTY0LjA3NkMxMzcwLjU0IDU3NS4xMjIgMTM2MS41OSA1ODQuMDc2IDEzNTAuNTQgNTg0LjA3NkgxMzM2LjIzVjU2OC44ODhMMTM0Ny4zNiA1NjguODg4QzEzNTEuNzcgNTY4Ljg4OCAxMzU1LjM2IDU2NS4zMDYgMTM1NS4zNiA1NjAuODg4TDEzNTUuMzYgNTUzLjUxMUgxMzE5LjA0TDEzMTkuMDQgNTg0LjU2NUgxMzAzLjg1VjQ4NC4zNjZIMTM3MC41NFpNMTM5My40NSA1MDUuOTQ5TDEzOTMuNDUgNTIzLjIzOEwxNDE5LjcyIDUyMy4yMzlMMTQyMC4wMyA1MjMuMjM3QzE0MjUuODIgNTIzLjE1NiAxNDI4LjI4IDUyMC44MDEgMTQyOC40NCA1MTUuMTI5TDE0MjguNDQgNTE1LjAwOEgxNDQzLjYzTDE0NDMuNjIgNTE1LjM3OEMxNDQzLjI2IDUyOS40NzcgMTQzNC4wMiA1MzguNDI2IDE0MTkuNzIgNTM4LjQyNkwxMzkzLjQ1IDUzOC40MjZMMTM5My40NSA1NjUuMzc4QzEzOTMuNDUgNTY3LjU4OCAxMzk1LjI0IDU2OS4zNzggMTM5Ny40NSA1NjkuMzc4SDE0MjEuMTNMMTQyMS40MSA1NjkuMzc1QzE0MjUuOTcgNTY5LjI3NSAxNDI4LjQ0IDU2Ni43MSAxNDI4LjQ0IDU2Mi4wNjVMMTQyOC40NCA1NDcuNzk1SDE0NDMuNjNMMTQ0My42MyA1NjMuMzQ2QzE0NDMuNjMgNTc2LjQ1OCAxNDM1LjUzIDU4NC41NjYgMTQyMi40MSA1ODQuNTY2TDEzODYuMjYgNTg0LjU2M0MxMzgxLjg0IDU4NC41NjIgMTM3OC4yNiA1ODAuOTgxIDEzNzguMjYgNTc2LjU2M0wxMzc4LjI2IDUwNS45NDlIMTM5My40NVpNOTI4LjIyIDU1Mi4xOTJIODkyLjE0N1Y1NjkuMzc5SDkyOC4yMlY1NTIuMTkyWk04NzYuOTYxIDQ4Ny40NDNIODU3LjEzM1Y1NjkuMzc5SDg3Ni45NjFWNDg3LjQ0M1pNOTYzLjIzNCA0ODcuNDQzSDk0My40MDdWNTY5LjM3OUg5NTUuMjI5Qzk1OS42NDcgNTY5LjM3OSA5NjMuMjI5IDU2NS43OTcgOTYzLjIyOSA1NjEuMzc5TDk2My4yMzQgNDg3LjQ0M1pNMTI2Ny43NiA1NTguOTY1TDExNzQuMDQgNTU4Ljk2NVY1NjkuMzc5SDEyNTkuNzZDMTI2NC4xOCA1NjkuMzc5IDEyNjcuNzYgNTY1Ljc5NyAxMjY3Ljc2IDU2MS4zNzlWNTU4Ljk2NVpNMTI2Ny43NiA1MzMuMzY0SDExNzQuMDRWNTQzLjc3N0gxMjY3Ljc2VjUzMy4zNjRaTTEzNTUuMzYgNTI2LjUzMkgxMzE5LjA0VjUzOC4zMjRIMTM1NS4zNlY1MjYuNTMyWk05MjguMjIgNTE5LjgxN0g4OTIuMTQ3VjUzNy4wMDVIOTI4LjIyVjUxOS44MTdaTTEwNTkuNzkgNDM5Ljg4VjQ2MC43MjRDMTA1OS43OSA0NzEuNzY5IDEwNTAuODQgNDgwLjcyMyAxMDM5Ljc5IDQ4MC43MjRMMTAxNC45NCA0ODAuNzI1TDEwMTQuOTMgNDY1LjUzOEwxMDM2LjYgNDY1LjUzOUMxMDQxLjAyIDQ2NS41MzkgMTA0NC42IDQ2MS45NjUgMTA0NC42IDQ1Ny41NTFMMTA0NC42MSA0NTUuMDY4SDEwMTQuOTNMMTAxNC45MyA0NjQuNThMMTAxNC45MyA0ODEuNzI2TDEwMTQuOTQgNDgxLjcyNkwxMDE0Ljk1IDQ4OC4zOTNMMTA1OS42MSA0ODguMzkzTDEwNTkuNjEgNTExLjNDMTA1OS42MSA1MjIuMzQ0IDEwNTAuNjYgNTMxLjI5OCAxMDM5LjYxIDUzMS4zMDFMMTAxMy45OSA1MzEuMzA2TDEwMTMuOTkgNTMxLjM1MkgxMDA4LjEzTDEwMDguMTMgNTE0LjI5NkwxMDA3LjI5IDUxNS4xMUwxMDA2Ljk4IDUxNS4zOTZDMTAwMy45IDUxOC4yMTkgOTk5LjkzOSA1MTkuNzgyIDk5NS4zNDEgNTE5Ljg3MUw5OTQuMjMzIDUxOS44NzNWNTA0LjY2MUw5OTQuMzc1IDUwNC42NDdDOTk3LjEzNyA1MDQuMjk4IDk5OS42MTUgNTAxLjc2NiA5OTkuNzE3IDQ5OS4xNDJMOTk5LjcyNyA0OTguNzIyTDk5OS45MTcgNDM5Ljg4SDEwNTkuNzlaTTExMDkuNTQgNDM0LjQ4NEwxMTA5LjU0IDQ0NS4yNzZMMTEzNS4zIDQ0NS4yNzZWNDYwLjQ2M0wxMTI5LjkgNDYwLjQ2NFY0NjcuNTQ3TDExMjkuOSA0NjcuOTg5QzExMjkuODUgNDcwLjU2OCAxMTI5LjM5IDQ3My4wODkgMTEyOC41NSA0NzUuNDc3TDExMjguMzEgNDc2LjE0NEwxMTM3Ljk5IDQ3Ni4xNFY0OTEuMzI4TDExMDkuNTQgNDkxLjMyOVY1MDIuMzA4TDExMzUuMyA1MDIuMzA3VjUxNy40OTVMMTEwOS41NCA1MTcuNDk1TDExMDkuNTQgNTMxLjMwNkgxMDk0LjM2TDEwOTQuMzYgNTE3LjQ5NUwxMDY4LjYgNTE3LjQ5NVY1MDIuMzA3TDEwOTQuMzYgNTAyLjMwOFY0OTEuMzI5TDEwNjUuOTEgNDkxLjMyOFY0NzYuMTRMMTA3NS41OSA0NzYuMTQ0TDEwNzUuMzUgNDc1LjQ3N0MxMDc0LjUxIDQ3My4wODkgMTA3NC4wNSA0NzAuNTY4IDEwNzQgNDY3Ljk4NEwxMDc0IDQ2Ny41NDNMMTA3NCA0NjAuNDY0TDEwNjguNiA0NjAuNDYzVjQ0NS4yNzZMMTA5NC4zNiA0NDUuMjc2TDEwOTQuMzYgNDM0LjQ4NEgxMTA5LjU0Wk0xMDQ0LjkxIDUwMy41OEgxMDIzLjI0TDEwMjMuMjQgNTE2LjExOUgxMDM2Ljg5QzEwNDEuMyA1MTYuMTE5IDEwNDQuODggNTEyLjU1MyAxMDQ0Ljg5IDUwOC4xNDVMMTA0NC45MSA1MDMuNThaTTExNzYuNzQgNDM0LjQ4NEwxMTc2Ljc0IDQ0NS4yNzZMMTIxOC45NCA0NDUuMjc1VjQ2MC40NjJMMTE5OC4zMiA0NjAuNDYzVjQ3MS42NTJMMTIxOC45NCA0NzEuNjUxVjQ4Ni44MzlMMTE5OC4yOSA0ODYuODRMMTE5OC4yNiA0ODcuMzA2TDExOTguMjIgNDg3Ljc1MUMxMTk2Ljk4IDUwMi40MDQgMTE4NC41OSA1MTMuMTU4IDExNjkuMTUgNTEzLjE1OEgxMTUzLjQ2VjQ5Ny45N0wxMTY5LjE1IDQ5Ny45NzFDMTE3Ni4yOSA0OTcuOTcxIDExODEuOTYgNDkzLjc4IDExODIuOTcgNDg3LjQxOUwxMTgzLjA3IDQ4Ni44NEwxMTUzLjQ2IDQ4Ni44MzlWNDcxLjY1MUwxMTgzLjE0IDQ3MS42NTJWNDYwLjQ2M0wxMTcwLjczIDQ2MC40NjNMMTE3MC41OCA0NjAuNjFMMTE3MC4yOCA0NjAuOTA1QzExNjYuMTQgNDY0Ljg5MSAxMTYwLjMxIDQ2Ny4xMjkgMTE1My40NiA0NjcuMjMyVjQ1Mi4wNDJMMTE1My42IDQ1Mi4wMzlDMTE1OS4wNCA0NTEuODcgMTE2MS41NiA0NDkuNDk2IDExNjEuNTYgNDQ0Ljc3NkwxMTYxLjU1IDQzNC40ODRIMTE3Ni43NFpNMTM1NS4zNiA0OTkuNTU0SDEzMTkuMDRMMTMxOS4wNCA1MTEuMzQ1SDEzNTUuMzZWNDk5LjU1NFpNMTI4OC4zNCA0NDUuMjc2TDEyODguMzQgNDg5LjI3NEMxMjg4LjM0IDUwMC4zMTkgMTI3OS4zOSA1MDkuMjczIDEyNjguMzQgNTA5LjI3M0gxMjI2LjY2VjQ0NS4yNzZIMTI4OC4zNFpNMTIxOC45NCA0OTMuOTUyTDEyMTkgNTA5TDExOTkuNSA1MDkuMTRWNDkzLjk1MkgxMjE4Ljk0Wk05MjguMjIgNDg3LjQ0M0g4OTIuMTQ3VjUwNC42M0g5MjguMjJWNDg3LjQ0M1pNMTM5My40NSA0MzQuNDg0TDEzOTMuNDUgNDUwLjc3NUwxNDE5LjcyIDQ1MC43NzZMMTQyMC4wMyA0NTAuNzczQzE0MjUuODIgNDUwLjY5MyAxNDI4LjI4IDQ0OC4zMzcgMTQyOC40NCA0NDIuNjY2TDE0MjguNDQgNDQyLjU0NEgxNDQzLjYzTDE0NDMuNjIgNDQyLjkxNUMxNDQzLjI2IDQ1Ny4wMTQgMTQzNC4wMiA0NjUuOTYzIDE0MTkuNzIgNDY1Ljk2M0wxMzkzLjQ1IDQ2NS45NjNMMTM5My40NSA0NzkuMDQ2QzEzOTMuNDUgNDgxLjI1NSAxMzk1LjI0IDQ4My4wNDYgMTM5Ny40NSA0ODMuMDQ2SDE0MjEuMTNMMTQyMS40MiA0ODMuMDQzQzE0MjYuMDIgNDgyLjk0NyAxNDI4LjQ0IDQ4MC41NTMgMTQyOC40NCA0NzUuOTU4TDE0MjguNDQgNDczLjg5N0gxNDQzLjYzTDE0NDMuNjMgNDc3LjAxM0MxNDQzLjYzIDQ5MC4xMjYgMTQzNS41MyA0OTguMjM0IDE0MjIuNDEgNDk4LjIzNEwxMzg2LjI2IDQ5OC4yM0MxMzgxLjg0IDQ5OC4yMyAxMzc4LjI2IDQ5NC42NDggMTM3OC4yNiA0OTAuMjNMMTM3OC4yNiA0MzQuNDg0SDEzOTMuNDVaTTEyNzMuMTYgNDYwLjQ2M0gxMjQxLjg1VjQ5NC4wODVIMTI2NS4xNkMxMjY5LjU3IDQ5NC4wODUgMTI3My4xNiA0OTAuNTA0IDEyNzMuMTYgNDg2LjA4NVY0NjAuNDYzWk0xMzQxLjM0IDQzNC40ODRMMTM0MS4zMyA0MzQuODFDMTM0MS4xNyA0NDIuMTQzIDEzMzguNzYgNDQ2LjkyNCAxMzMxLjk5IDQ1My4wNjVMMTMyMy40IDQ2MS40NjNMMTM1NS4zNiA0NjEuNDYzTDEzNTUuMzQgNDUwLjcxNkgxMzcwLjU0VjQ3Ni42NUgxMzAzLjg1VjQ1Ny4yMTJMMTMyMC4xOCA0NDEuMDEzTDEzMjAuNDEgNDQwLjgyNEMxMzIyLjI3IDQzOS4yODEgMTMyMy40MSA0MzcuMDQxIDEzMjMuNTcgNDM0LjU5OUwxMzIzLjU4IDQzNC40ODRIMTM0MS4zNFpNMTExNC43MSA0NjAuNDY0SDEwODkuMTlWNDY3LjU0N0MxMDg5LjE5IDQ3Mi4xNjQgMTA5Mi41MiA0NzUuOTY0IDEwOTYuNzUgNDc2LjEzNUwxMDk3LjAzIDQ3Ni4xNDFIMTEwNi44NkwxMTA3LjE0IDQ3Ni4xMzVDMTExMS4yMSA0NzUuOTcxIDExMTQuNDcgNDcyLjQ0NiAxMTE0LjcgNDY4LjAzOEwxMTE0LjcxIDQ2Ny41NlY0NjAuNDY0WiIgZmlsbD0iIzM3M0VEOCIvPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNOTUwLjU3NiA2NTcuMzUzQzk0Ny44IDY1OS4wMzQgOTQ0LjUwMSA2NTkuODc0IDk0MC42OCA2NTkuODc0QzkzNi44NDYgNjU5Ljg3NCA5MzMuNTQyIDY1OS4wMzcgOTMwLjc2OSA2NTcuMzYyQzkyNy45OTYgNjU1LjY4OCA5MjUuODYgNjUzLjMwOCA5MjQuMzYxIDY1MC4yMjJDOTIyLjg2MiA2NDcuMTM3IDkyMi4xMTMgNjQzLjQ5MSA5MjIuMTEzIDYzOS4yODZMOTIyLjExNiA2MzguNzgxQzkyMi4xNjggNjM0Ljc0NyA5MjIuOTI0IDYzMS4yNDggOTI0LjM4NCA2MjguMjg1QzkyNS44OTkgNjI1LjIxMiA5MjguMDQ1IDYyMi44NDEgOTMwLjgyNCA2MjEuMTcyQzkzMy42MDMgNjE5LjUwNCA5MzYuODg4IDYxOC42NyA5NDAuNjggNjE4LjY3Qzk0NC40ODkgNjE4LjY3IDk0Ny43ODIgNjE5LjUwNCA5NTAuNTU4IDYyMS4xNzJDOTUzLjMzNCA2MjIuODQxIDk1NS40NzUgNjI1LjIxNSA5NTYuOTggNjI4LjI5NEM5NTguNDg1IDYzMS4zNzQgOTU5LjIzOCA2MzUuMDE5IDk1OS4yMzggNjM5LjIzMUw5NTkuMjM1IDYzOS43MzRDOTU5LjE4MyA2NDMuNzUxIDk1OC40MzUgNjQ3LjI0MyA5NTYuOTg5IDY1MC4yMTNDOTU1LjQ5IDY1My4yOTIgOTUzLjM1MyA2NTUuNjcyIDk1MC41NzYgNjU3LjM1M1pNODQ4LjMwNyA2NTguODk4SDg0MS45OTdWNjE5LjY0N0g4NTAuMDM0TDg2MS44NDMgNjQ5Ljg1Nkg4NjIuMzA0TDg3NC4wOTcgNjE5LjY0N0g4ODIuMTMzVjY1OC44OThIODc1LjgyM1Y2MzAuOTg5SDg3NS4zNTFMODY0LjQ1NSA2NTguODk4SDg1OS42NzVMODQ4Ljc5MyA2MzAuOTg5SDg0OC4zMDdWNjU4Ljg5OFpNOTQwLjY4IDY1My44MDhDOTM4LjMyMSA2NTMuODA4IDkzNi4yODggNjUzLjIxIDkzNC41OCA2NTIuMDEyQzkzMi44NzMgNjUwLjgxNSA5MzEuNTU4IDY0OS4xMjYgOTMwLjYzNiA2NDYuOTQ4QzkyOS43NTkgNjQ0Ljg3MyA5MjkuMjk5IDY0Mi40NTcgOTI5LjI1NyA2MzkuNzAyTDkyOS4yNTQgNjM5LjIzMUM5MjkuMjU0IDYzNi4yNzcgOTI5LjcyNCA2MzMuNzE1IDkzMC42NjQgNjMxLjU0NkM5MzEuNjA1IDYyOS4zNzYgOTMyLjkyOSA2MjcuNjk4IDkzNC42MzYgNjI2LjUxM0M5MzYuMzQ0IDYyNS4zMjggOTM4LjM1OCA2MjQuNzM2IDk0MC42OCA2MjQuNzM2Qzk0My4wMTMgNjI0LjczNiA5NDUuMDM0IDYyNS4zMjggOTQ2Ljc0MiA2MjYuNTEzQzk0OC40NSA2MjcuNjk4IDk0OS43NjkgNjI5LjM3NiA5NTAuNyA2MzEuNTQ2Qzk1MS41ODkgNjMzLjYxNyA5NTIuMDUzIDYzNi4wNDUgOTUyLjA5NCA2MzguODMxTDk1Mi4wOTcgNjM5LjI4NkM5NTIuMDk3IDY0Mi4yMTUgOTUxLjYzMSA2NDQuNzY5IDk1MC43IDY0Ni45NDhDOTQ5Ljc2OSA2NDkuMTI2IDk0OC40NSA2NTAuODE1IDk0Ni43NDIgNjUyLjAxMkM5NDUuMDM0IDY1My4yMSA5NDMuMDEzIDY1My44MDggOTQwLjY4IDY1My44MDhaTTEwMTMuOTMgNjU4Ljg5OEg5OTkuMjE4VjYxOS42NDdIMTAxMy45M0MxMDE3LjgyIDYxOS42NDcgMTAyMS4xNSA2MjAuNDEgMTAyMy45IDYyMS45MzhDMTAyNi42NSA2MjMuNDY1IDEwMjguNzUgNjI1LjY3NyAxMDMwLjIgNjI4LjU3NEMxMDMxLjY2IDYzMS40NzEgMTAzMi4zOSA2MzQuOTcxIDEwMzIuMzkgNjM5LjA3NkwxMDMyLjM4IDYzOS41NzdDMTAzMi4zMyA2NDMuNTcgMTAzMS42MSA2NDYuOTg4IDEwMzAuMjEgNjQ5LjgzMkMxMDI4Ljc2IDY1Mi43OCAxMDI2LjY3IDY1NS4wMjkgMTAyMy45MiA2NTYuNTc2QzEwMjEuMTggNjU4LjEyNCAxMDE3Ljg1IDY1OC44OTggMTAxMy45MyA2NTguODk4Wk0xMDA2LjIyIDY1Mi45OTJWNjI1LjU1MkgxMDEyLjk5QzEwMTUuNTYgNjI1LjU1MiAxMDE3Ljc2IDYyNi4wODcgMTAxOS41OSA2MjcuMTU4QzEwMjEuNDIgNjI4LjIyOSAxMDIyLjgyIDYyOS43ODIgMTAyMy43OSA2MzEuODE3QzEwMjQuNzIgNjMzLjc2MyAxMDI1LjIgNjM2LjA5NCAxMDI1LjI0IDYzOC44MUwxMDI1LjI1IDYzOS4yMzdDMTAyNS4yNSA2NDIuMTYzIDEwMjQuNzcgNjQ0LjY1NCAxMDIzLjgxIDY0Ni43MDhDMTAyMi44NiA2NDguNzYyIDEwMjEuNDYgNjUwLjMyMyAxMDE5LjY0IDY1MS4zOTFDMTAxNy44MSA2NTIuNDU5IDEwMTUuNiA2NTIuOTkyIDEwMTIuOTkgNjUyLjk5MkgxMDA2LjIyWk0xMDk3Ljc1IDY1OC44OThIMTA3Mi4zN1Y2MTkuNjQ3SDEwOTcuNzVWNjI1LjU1MkgxMDc5LjM2VjYzNi4xNzNIMTA5Ni43NVY2NDEuNzY2SDEwNzkuMzZWNjUyLjk5MkgxMDk3Ljc1VjY1OC44OThaTTExMzguNDEgNjU4Ljg5OEgxMTYzLjQxVjY1Mi45OTJIMTE0NS40MVY2MTkuNjQ3SDExMzguNDFWNjU4Ljg5OFpNMTIxOS43MiA2NTguODk4SDEyMTBWNjUzLjQ0NEgxMjE4LjExQzEyMjAuNyA2NTMuNDQ0IDEyMjIuNjcgNjUyLjkxNyAxMjI0LjAxIDY1MS44NjFDMTIyNS4zNiA2NTAuODA2IDEyMjYuMDMgNjQ5LjI3OCAxMjI2LjAzIDY0Ny4yNzZMMTIyNi4wMyA2NDYuOTc1QzEyMjUuOTkgNjQ1Ljc1NiAxMjI1LjY4IDY0NC43MjQgMTIyNS4xIDY0My44OEMxMjI0LjQ4IDY0Mi45NzkgMTIyMy41NiA2NDIuMzAxIDEyMjIuMzQgNjQxLjg0NUMxMjIxLjEyIDY0MS4zODkgMTIxOS42MSA2NDEuMTYxIDEyMTcuODIgNjQxLjE2MUgxMjEwVjYzNi4xODZIMTIxNi43MUMxMjE5LjIxIDYzNi4xODYgMTIyMS4xIDYzNS43MTQgMTIyMi40IDYzNC43NjhDMTIyMy42OSA2MzMuODIzIDEyMjQuMzQgNjMyLjQ2IDEyMjQuMzQgNjMwLjY4TDEyMjQuMzQgNjMwLjQwOUMxMjI0LjI5IDYyOC43NzEgMTIyMy43IDYyNy40ODYgMTIyMi41NyA2MjYuNTU2QzEyMjEuMzkgNjI1LjU4NSAxMjE5LjczIDYyNS4xIDEyMTcuNjEgNjI1LjFIMTIxMFY2MTkuNjQ3SDEyMTkuMzFDMTIyMS44MSA2MTkuNjQ3IDEyMjMuOTUgNjIwLjA0MyAxMjI1LjczIDYyMC44MzVDMTIyNy41MSA2MjEuNjI3IDEyMjguODggNjIyLjc1MyAxMjI5Ljg0IDYyNC4yMTNDMTIzMC43OSA2MjUuNjcyIDEyMzEuMjcgNjI3LjQwNSAxMjMxLjI3IDYyOS40MTJMMTIzMS4yNyA2MjkuNzRDMTIzMS4yMyA2MzEuMDE1IDEyMzAuOTIgNjMyLjIwOSAxMjMwLjM0IDYzMy4zMjNDMTIyOS43MiA2MzQuNTE3IDEyMjguODggNjM1LjUxNiAxMjI3Ljg0IDYzNi4zMjFDMTIyNi43OSA2MzcuMTI1IDEyMjUuNjEgNjM3LjYzNyAxMjI0LjI4IDYzNy44NTZWNjM4LjMyNUMxMjI2LjA1IDYzOC40ODUgMTIyNy41OSA2MzguOTkgMTIyOC45MyA2MzkuODRDMTIzMC4yNiA2NDAuNjg5IDEyMzEuMzEgNjQxLjc5MiAxMjMyLjA2IDY0My4xNDlDMTIzMi44MSA2NDQuNTA1IDEyMzMuMTkgNjQ2LjAzMSAxMjMzLjE5IDY0Ny43MjVMMTIzMy4xOSA2NDguMDg5QzEyMzMuMTQgNjUwLjI0MyAxMjMyLjYgNjUyLjExNCAxMjMxLjU2IDY1My43MDNDMTIzMC40NyA2NTUuMzY3IDEyMjguOTMgNjU2LjY0OSAxMjI2LjkyIDY1Ny41NDhDMTIyNC45MiA2NTguNDQ4IDEyMjIuNTEgNjU4Ljg5OCAxMjE5LjcyIDY1OC44OThaTTEyMDIuOTQgNjU4Ljg5OEgxMjA5Ljk0VjYxOS42NDdIMTIwMi45NFY2NTguODk4Wk0xMjk4LjE1IDY1OC44OThIMTI3Mi43N1Y2MTkuNjQ3SDEyOTguMTVWNjI1LjU1MkgxMjc5Ljc2VjYzNi4xNzNIMTI5Ny4xNVY2NDEuNzY2SDEyNzkuNzZWNjUyLjk5MkgxMjk4LjE1VjY1OC44OThaTTEzNTIuNDIgNjU5Ljg3NEMxMzU1LjU2IDY1OS44NzQgMTM1OC4yOCA2NTkuMzY4IDEzNjAuNTcgNjU4LjM1NEMxMzYyLjg3IDY1Ny4zNDEgMTM2NC42NCA2NTUuOTA3IDEzNjUuODkgNjU0LjA1MkMxMzY3LjA4IDY1Mi4yNzUgMTM2Ny43IDY1MC4xODMgMTM2Ny43NSA2NDcuNzc2TDEzNjcuNzUgNjQ3LjQzM0MxMzY3Ljc1IDY0NC40NjEgMTM2Ni44MyA2NDIuMTAxIDEzNjQuOTkgNjQwLjM1MkMxMzYzLjIxIDYzOC42NTggMTM2MC4zNCA2MzcuMzc4IDEzNTYuNCA2MzYuNTEyTDEzNTEuOCA2MzUuNTI3QzEzNDkuMzYgNjM1LjAxNiAxMzQ3LjYgNjM0LjMxIDEzNDYuNTIgNjMzLjQxQzEzNDUuNSA2MzIuNTUyIDEzNDQuOTYgNjMxLjQ3OSAxMzQ0LjkyIDYzMC4xOUwxMzQ0LjkxIDYyOS45NjhDMTM0NC45MSA2MjguODM3IDEzNDUuMjMgNjI3Ljg3IDEzNDUuODcgNjI3LjA2N0MxMzQ2LjUyIDYyNi4yNjQgMTM0Ny40IDYyNS42NDUgMTM0OC41MSA2MjUuMjA5QzEzNDkuNjMgNjI0Ljc3MyAxMzUwLjkyIDYyNC41NTUgMTM1Mi4zNyA2MjQuNTU1QzEzNTMuODYgNjI0LjU0MyAxMzU1LjE3IDYyNC43NjIgMTM1Ni4zIDYyNS4yMTNDMTM1Ny40MyA2MjUuNjY0IDEzNTguMzMgNjI2LjI3OSAxMzU5LjAxIDYyNy4wNTZDMTM1OS42OSA2MjcuODMzIDEzNjAuMTEgNjI4LjczMyAxMzYwLjI3IDYyOS43NTVMMTM2MC4zMyA2MzAuMDkySDEzNjcuMDJMMTM2Ni45OSA2MjkuNzM3QzEzNjYuODQgNjI3LjYyOSAxMzY2LjE1IDYyNS43NDIgMTM2NC45NCA2MjQuMDc1QzEzNjMuNzMgNjIyLjQwOSAxMzYyLjA2IDYyMS4wOTEgMTM1OS45NCA2MjAuMTIzQzEzNTcuODEgNjE5LjE1NCAxMzU1LjMxIDYxOC42NyAxMzUyLjQxIDYxOC42N0MxMzQ5LjU5IDYxOC42NyAxMzQ3LjA4IDYxOS4xNjIgMTM0NC44OSA2MjAuMTQ1QzEzNDIuNzEgNjIxLjEyOCAxMzQxIDYyMi41IDEzMzkuNzUgNjI0LjI2QzEzMzguNTcgNjI1Ljk0NCAxMzM3Ljk0IDYyNy44OTEgMTMzNy44OCA2MzAuMTAyTDEzMzcuODcgNjMwLjQzM0MxMzM3Ljg3IDYzMy4zNjYgMTMzOC43OSA2MzUuNzY5IDEzNDAuNjIgNjM3LjY0NEMxMzQyLjQ1IDYzOS41MTggMTM0NS4zNyA2NDAuODc5IDEzNDkuMzkgNjQxLjcyNkwxMzUzLjYyIDY0Mi42MDlDMTM1Ni4xNSA2NDMuMTQ1IDEzNTcuOTcgNjQzLjg2NCAxMzU5LjA3IDY0NC43NjZDMTM2MC4xMiA2NDUuNjI4IDEzNjAuNjcgNjQ2LjcyMyAxMzYwLjcxIDY0OC4wNUwxMzYwLjcyIDY0OC4yNjhDMTM2MC43MiA2NDkuMzg1IDEzNjAuMzcgNjUwLjM3NSAxMzU5LjY4IDY1MS4yMzlDMTM1OC45OSA2NTIuMTAyIDEzNTguMDUgNjUyLjc3NiAxMzU2Ljg0IDY1My4yNjFDMTM1NS42MyA2NTMuNzQ3IDEzNTQuMjMgNjUzLjk4OSAxMzUyLjY1IDY1My45ODlDMTM1MC45OSA2NTMuOTg5IDEzNDkuNTIgNjUzLjc2MSAxMzQ4LjIzIDY1My4zMDRDMTM0Ni45NCA2NTIuODQ3IDEzNDUuOTIgNjUyLjIxIDEzNDUuMTYgNjUxLjM5M0MxMzQ0LjQgNjUwLjU3NiAxMzQzLjk2IDY0OS42MTggMTM0My44NCA2NDguNTE5TDEzNDMuODEgNjQ4LjI0NUgxMzM3TDEzMzcuMDIgNjQ4LjYyMkMxMzM3LjIgNjUwLjg3IDEzMzcuOTMgNjUyLjgzOCAxMzM5LjIyIDY1NC41MjVDMTM0MC41MSA2NTYuMjEyIDEzNDIuMjcgNjU3LjUyNSAxMzQ0LjUxIDY1OC40NjVDMTM0Ni43NSA2NTkuNDA0IDEzNDkuMzkgNjU5Ljg3NCAxMzUyLjQyIDY1OS44NzRaTTE0MjQuMzYgNjU4Ljg5OEgxNDE3LjM2VjYyNS41NTJIMTQwNS4yNlY2MTkuNjQ3SDE0MzYuNDVWNjI1LjU1MkgxNDI0LjM2VjY1OC44OThaIiBmaWxsPSIjMzczRUQ4Ii8+PC9zdmc+" alt="面壁智能 ModelBest" />
+      <span class="logo-divider" aria-hidden="true"></span>
+      <h1>一汽丰田·场景需求交流</h1>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="售前交流章节">
+      <button class="tab" role="tab" id="tab-scene" aria-controls="panel-scene"
+              aria-selected="true" data-tab="scene" type="button">
+        <span class="no">1</span>场景需求
+      </button>
+    </nav>
+  </div>
+
+
+
+  <!-- ======================= 场景需求（占位） ======================= -->
+  <div class="tab-panel" id="panel-scene" role="tabpanel" aria-labelledby="tab-scene" data-active="true">
+    <div class="card" id="sceneCard">
+      <div class="product-top scene-section-head">
+        <div class="product-top-copy scene-section-copy">
+          <div class="section-title-line">
+            <span class="section-title-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5.2 16.5h13.6a1.7 1.7 0 0 0 1.7-1.7v-3.1a1.7 1.7 0 0 0-1.2-1.6l-1.4-.5-1.4-3.1a2 2 0 0 0-1.8-1.2H9.3a2 2 0 0 0-1.8 1.2L6.1 9.6l-1.4.5a1.7 1.7 0 0 0-1.2 1.6v3.1a1.7 1.7 0 0 0 1.7 1.7Z"/>
+                <path d="M6.4 16.5v1.3M17.6 16.5v1.3M6.7 10h10.6M6.1 13.1h.1M17.8 13.1h.1"/>
+              </svg>
+            </span>
+            <div>
+              <h2>用车场景</h2>
+              <p class="note">
+                <span>从 SuperMate 场景库中筛选的</span>
+                <b>8 类场景</b><span class="sep">·</span><b>62 个子场景</b>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scene-sticky-sentinel" id="sceneStickySentinel" aria-hidden="true"></div>
+      <div class="scene-sticky" id="sceneSticky">
+      <div class="subtabs" id="scenePosTabs" role="tablist" aria-label="按定位筛选">
+        <button class="subtab" role="tab" type="button" data-pos="all" aria-selected="true">
+          <span class="subtab-top"><span>全量</span><span class="subtab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg></span></span>
+          <span class="cnt">62</span>
+        </button>
+        <button class="subtab" role="tab" type="button" data-pos="家庭" aria-selected="false">
+          <span class="subtab-top"><span>家庭</span><span class="subtab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="2.5"/><circle cx="15.5" cy="9.2" r="2"/><path d="M4.8 17.9c.3-3 1.8-4.7 4.2-4.7s3.9 1.7 4.2 4.7"/><path d="M14.2 14.2c2.5-.7 4.5.7 5 3.7"/></svg></span></span>
+          <span class="cnt">26</span>
+        </button>
+        <button class="subtab" role="tab" type="button" data-pos="工作" aria-selected="false">
+          <span class="subtab-top"><span>工作</span><span class="subtab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7.5" width="16" height="11.5" rx="2"/><path d="M8.5 7.5V6.4A1.8 1.8 0 0 1 10.3 4.6h3.4a1.8 1.8 0 0 1 1.8 1.8v1.1M4 12.2h16M10.2 12.2v1.5h3.6v-1.5"/></svg></span></span>
+          <span class="cnt">24</span>
+        </button>
+        <button class="subtab" role="tab" type="button" data-pos="个人" aria-selected="false">
+          <span class="subtab-top"><span>个人</span><span class="subtab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3"/><path d="M5.8 19.2c.4-3.3 2.4-5.4 6.2-5.4s5.8 2.1 6.2 5.4"/></svg></span></span>
+          <span class="cnt">6</span>
+        </button>
+        <button class="subtab" role="tab" type="button" data-pos="通用" aria-selected="false">
+          <span class="subtab-top"><span>通用/特殊</span><span class="subtab-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8 13.8 9l5.2 1.8-5.2 1.8L12 17.8l-1.8-5.2L5 10.8 10.2 9 12 3.8Z"/><path d="m18.5 4.3.6 1.8 1.8.6-1.8.6-.6 1.8-.6-1.8-1.8-.6 1.8-.6.6-1.8Z"/></svg></span></span>
+          <span class="cnt">6</span>
+        </button>
+      </div>
+      <nav class="scene-caps" id="sceneCaps" aria-label="主场景快捷跳转"></nav>
+      </div>
+
+      <div class="slist" id="sceneList">
+      <section class="sgroup" data-scene="家庭 - 中长途出游">
+<div class="sgroup-head">家庭 - 中长途出游<span class="cnt">11</span><span class="rule"></span></div>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/77.jpg" alt="故事版 77" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">全家不同冷热感受调温</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">大家庭满员出行</span><span class="tag">在车内 - 行驶中</span><span class="tag">身心舒适</span></div>
+            <div class="stext"><p>全家一起坐车，每个人对冷热的感受都不一样。<br>孩子醒着玩时，需要凉快一点；等他睡着了，又要把温度调高、风量调小，免得着凉。<br>我们觉得刚好的温度，老人可能已经嫌冷，尤其不能让空调一直对着膝盖吹。<br>麻烦的是需要观察和反复调节，孩子睡着还是醒了，或者车内换座了，就要相应调整</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>一家老小同车出行，希望车内环境能跟随不同乘员对温度的体感偏好、睡/醒状态、座位变化做相应调整，让全家人都舒服，我也不必反复观察和代劳操作</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/137.jpg" alt="故事版 137" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">满座状态下的座位空间调整</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">大家庭满员出行</span><span class="tag">靠近车 -  进入车</span><span class="tag">身心舒适</span></div>
+            <div class="stext"><p>一家人在车内，大家身高、身体状态不同，对空间和坐姿的要求也不一样。<br>奶奶个子小，腿部空间不用留太多，但她腰不好，靠背喜欢直一点。 爷爷身高一米八，需要多留一些腿部空间。小朋友占的空间则相对少，可以坐得紧凑些。<br>老人小孩的位置都是我来帮忙挨个调整。中途只要有人换座，座椅又得重新调</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>大家庭多人出行或临时换座，车辆能识别和延续每个人习惯的空间与坐姿，不必每次重新手动调整，每个人能有舒服的乘坐空间</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/70.jpg" alt="故事版 70" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">全家每个人的舱内独立活动空间</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">大家庭满员出行</span><span class="tag">在车内 - 行驶中</span><span class="tag">关怀陪伴</span></div>
+            <div class="stext"><p>一家六口自驾，除了一起聊天听歌，有时玩累了，也会在各自座位上休息娱乐 —— 人在同一辆车里，想做的事却不一样。<br>比如刚才二三排还在一起看动画片，后面奶奶在三排睡着了，那我就要把动画片声音挪到仅二排。<br>车内互动状态一变，往往整车声音环境都得重新调一遍，总要靠自己反复观察和操作调整</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当多成员长时间同行、各有各自活动时（听歌、看动画、休息、打电话），希望可以方便地调整车内的声音环境，给到大家独立空间，减少相互之间的干扰</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/38.jpg" alt="故事版 38" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">车内座椅电动调节防夹</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">坐不住的熊孩子</span><span class="tag">在车内 - 行驶中</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>车里很多东西都能电动动起来：座椅靠背、座椅扶手、冰箱门、车门开合...  还有一键成床等各种模式。<br>小孩可能会乱按，手或者身体可能没注意就就被夹住，来不及躲开。虽然这车说有防夹，可多半是夹到后、顶到有阻力才停。对我来说，那已经晚了半步，尤其孩子力气小。<br>我希望的是可以做到“预防”，就是识别到潜在风险，还没真正夹上去，就可以停止并提醒，才是真正的安心</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当使用座椅电动调节或一键座椅等模式时，希望在真正夹上之前就能察觉潜在风险并停下、提醒，以免只靠遇阻才停，尤其车上有孩子时情况下</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/18.jpg" alt="故事版 18" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">用趣味的方式让孩子养成安全习惯</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">坐不住的熊孩子</span><span class="tag">在车内 - 行驶中</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>小孩正式调皮的年纪，每次带他出去，在车上容易坐不住，四处乱动<br>只能大人不断口头提醒：要好好坐、手不要伸出去、马上转弯了。但大人越反复说，他越不愿意听<br>我后来发现，乘车安全不能只是枯燥的口头命令，如果说可以结合窗外场景做有趣的安全教育知识，比如正在经过的隧道（“时空隧道要系好安全带”）、转弯和红绿灯（“坐稳了飞船要加速了”），用孩子觉得有趣、听得懂的方式讲给他，让他愿意配合，也慢慢记住为什么要这样做。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>孩子在行车过程中坐不住，有一些吵闹或危险行为时，除了劝阻外，我更希望用孩子愿意听的方式表达和沟通（如结合车外实景的趣味主题故事 “要进入时空隧道要做好”），让他主动配合并逐渐形成乘车安全意识</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/5.jpg" alt="故事版 5" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">关注后排父母精神和身体状态</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">大家庭满员出行</span><span class="tag">在车内 - 行驶中</span><span class="tag">身心舒适</span></div>
+            <div class="stext"><p>父母上了年纪，出去玩的时候，需要对他们身体和精神状态格外关照一下，累了就少逛一些，或者多停车休息一下，不要太密集。<br>他们腰椎、颈椎劳损，长时间保持固定坐姿，很容易腰酸背痛，需要时不时换个坐姿和下车走走休息一下。长时间久坐密闭车厢，也会出现头晕胸闷的情况<br>但他们经常累了也不会主动说出来，默默忍着，可能也想减少我的麻烦。自己开着车，也容易忽视父母真实身体状况和感受</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>与年长父母一同出行，关注到他们没有主动说出口的疲惫和不适（困了累了/  晕车 / 久坐酸痛等），以此给到关怀和调整好接下来的行程节奏</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/71.jpg" alt="故事版 71" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">长途出行前与孩子的铺垫</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">大家庭满员出行</span><span class="tag">远离车-  未出发</span><span class="tag">关怀陪伴</span></div>
+            <div class="stext"><p>暑假带孩子出去看世界，不要整天宅在家里。确定大致行程后，我会提前查沿途城市和景点，了解当地的历史、传说、动植物和生活习俗。<br>但大人觉得有意思的历史文化，直接讲给孩子听，他往往没什么反应。「我得把知识翻译成他能听懂、愿意继续追问的故事或者问题，在吃饭、睡觉前和他聊一聊」<br>资料不难找，难的是怎么变成孩子愿意听、愿意追问的内容，引起好奇心。我希望旅行还没开始，他就已经对目的地有了想象，觉得这是一次自己也参与决定的探索。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>带孩子出游前，可以把这次出行旅程安排转化成孩子听得懂、感兴趣的故事或知识点，激发孩子的参与度和对旅行的期待</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/149.jpg" alt="故事版 149" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">全家人车内一起聊天</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">大家庭满员出行</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>一家人出去玩的高速上，全家一起说话聊天，奶奶坐在第三排，说话声音本来就不算大，再叠上风噪、胎噪，我们坐在第一排经常只能听见半截。<br>前面聊得热闹，后面回应不上来，她提高嗓门又累，我们也听不清。有时只能让二排当传话，或者干脆各聊各的。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>一家人出行开在高速上、想全车一起说话时，一三排之间的话能相互听清，不用靠吼或传话也能轻松聊起来</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/150.jpg" alt="故事版 150" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">过年长途驾驶疲劳打盹</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">长途自驾回老家</span><span class="tag">在车内 - 行驶中</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>过年回家开长途，有时候疲惫其实已经上来了，自己却觉得身体还撑得住，但反应慢慢变慢<br>太太在副驾驶睡着了，也没人再盯着和我说话。状态却在下滑，却很难准确判断自己到底还能不能开，总是觉得再撑一撑没事</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>长途驾驶、疲劳已累积却不自知情况下，能及时警醒自己状态已下滑，避免潜在安全隐患</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/69.jpg" alt="故事版 69" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">帮孩子找想看的动画片段</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">坐不住的熊孩子</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>孩子坐久了就容易不耐烦，我们会给他看动画片。小孩还小，不会自己操作屏幕，也说不全片名和集数，每次都得大人帮找。<br>他要看的越来越具体，表达却还是孩子的逻辑：「我想看上周姥姥帮我找的那个小乌龟」，「大象去小老鼠家做客」，「他们俩去海里冒险那一段」<br>线索对我们远远不够 —— 尤其上次是其他家人帮忙找的，连片名都不知道。找到片子，也不知是哪一集、哪一段。<br>我们只能翻观看历史、按角色情节搜，再打开几集逐个确认。尤其我自己开车时更麻烦：腾不出手，只能让他等，或先放个相似的，他往往更不满意。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>孩子想看特定的动画片或片段，要根据孩子口语化、并不完整的情节描述或观看历史，找到他想看的内容，减少反复搜索带来的繁琐和孩子等待时的烦躁</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/180.jpg" alt="故事版 180" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">大家庭出行的行程规划</h3></div>
+            <div class="stags"><span class="tag">家庭 - 中长途出游</span><span class="tag">大家庭满员出行</span><span class="tag">远离车-  未出发</span><span class="tag">关怀陪伴</span></div>
+            <div class="stext"><p>大家庭长途出门，规划出游路线的时候，得顾着每个人的情况：适合五岁孩子去的地方、老人腿脚不便、长途休息偏好有母婴室服务区，最好是五星服务区，歇一会儿顺便给车充电。<br>但各种出行平台上的信息都太过于标准化了，并没有考虑到我们家庭的出行偏好<br>只能我自己先到各个平台找，再结合自家的情况做好导航路线的筛选，规划起来非常费劲</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>规划大家庭长途自驾时，希望可以贴合家庭成员的出行喜好、身体状况等因素来制定计划，让出行安排和节奏妥当</p></div>
+            </div>
+          </div>
+        </article>
+</section>
+      <section class="sgroup" data-scene="家庭 - 家庭短途出游">
+<div class="sgroup-head">家庭 - 家庭短途出游<span class="cnt">4</span><span class="rule"></span></div>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/6.jpg" alt="故事版 6" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">和孩子逛野生动物园</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家庭短途出游</span><span class="tag">孩子户外好奇心之旅</span><span class="tag">在车内 - 行驶中</span><span class="tag">关怀陪伴</span></div>
+            <div class="stext"><p>周末带孩子去野生动物园玩，车是可以直接开进去的，想让他多接触接触户外，涨涨见识<br>小孩对动物园里的一切都很好奇和兴奋，经常会看看车外的不同的动物。也会经常和大人提问，比如那个红色的动物是什么，那个长脖子的动物怎么睡觉啊，路边黄黄的是什么树<br>问题一个接一个，但我们其实也都不一定能很好地回答上来，经常是临时搜，不想错过这么好的教育窗口</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>孩子沿途窗外的事物充满好奇和疑问，我希望能够很好地响应他并且有高质量的回答和互动，满足他的好奇心，寓教于乐</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/74.jpg" alt="故事版 74" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">沉浸感的出行旅途</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家庭短途出游</span><span class="tag">孩子户外好奇心之旅</span><span class="tag">在车内 - 行驶中</span><span class="tag">娱乐趣味</span></div>
+            <div class="stext"><p>带孩子去科技馆，刚上车还挺兴奋，路上会有一堆问题。但如果我没有持续和他互动，后面他就又开始吵着听儿歌、看动画片打发时间，一直盯着车内看屏幕<br>既然这次的目的地是科技馆，我希望从上车开始，车的角色就摇身一变成宇宙飞船。 我们的车不是普通汽车，而是一艘准备执行任务的宇宙飞船；沿途经过的树林、山坡、小镇和路标，也能自然成为冒险地图里的一部分。<br>这样对他来说，科技馆不是到了目的地才开始玩，开过去的这段路本身也是旅行的一部分，有沉浸感，也充满乐趣</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>希望结合本次行程主题，把座舱和沿途风景都变成孩子听得懂、可以参与的“沉浸故事空间” （去科技馆，车 - 宇宙飞船，路过隧道 -  时空隧道） ，让孩子不再只是被动等待到达，而是在路上就能有沉浸感和参与感</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/20.jpg" alt="故事版 20" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">结合窗外风景的亲子互动游戏</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家庭短途出游</span><span class="tag">孩子户外好奇心之旅</span><span class="tag">在车内 - 行驶中</span><span class="tag">娱乐趣味</span></div>
+            <div class="stext"><p>带孩子出门，怕他车上太无聊的，又不想让他天天盯着车内的屏幕看。我会带他一起玩一些“窗外游戏”。 比如路牌的认字游戏、认识车标的游戏。<br>这些字和正在经过的地方连在一起，他比看识字卡更有兴趣，认出来还会很兴奋。<br>孩子越玩越兴奋，一直让我陪他继续玩，但是大人的精力也有限，有时候也难以抽离开来做自己的事</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>和孩子开车出行时，希望能把沿途的事物变成趣味互动游戏（比如窗外认字游戏），让车程更有趣味和参与感，也不再总是依赖大人和屏幕看动画片</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/33.jpg" alt="故事版 33" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">亲子出行中稍纵即逝的美好瞬间</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家庭短途出游</span><span class="tag">孩子户外好奇心之旅</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>开车带孩子出门时，窗外常会掠过好看的风景，后排孩子也会突然蹦出一句有趣的话，或者全家一起笑起来。这些美好的瞬间往往只持续几秒。<br>我自己开车，腾不出手来及时记录。有时想喊家人帮忙拍，话还没说完，风景或者有趣的对话瞬间已经过去了</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>家庭出游途中路过好看的风景或出现有趣亲子互动时，希望这些稍纵即逝的美好瞬间能被更及时地留下来</p></div>
+            </div>
+          </div>
+        </article>
+</section>
+      <section class="sgroup" data-scene="家庭 - 家人日常接送">
+<div class="sgroup-head">家庭 - 家人日常接送<span class="cnt">11</span><span class="rule"></span></div>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/158.jpg" alt="故事版 158" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">后排儿童安全照看</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">接送孩子上下学</span><span class="tag">在车内 - 行驶中</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>自己带娃出行，小孩在后排为了能关注他，会准备好玩具、小零食给到他。<br>我顾着开车，前面路一颠簸，就担心尖锐小玩具戳到他，或者东西放不稳掉地上，会口头提醒他一下。<br>我只能时不时抬眼看后视镜，确认一眼又赶紧看路，。既怕看久了分心，又怕不看漏掉风险。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当独自带娃开车时，希仍能及时察觉后排孩子可能的风险场景（物品掉落、路面颠簸被小玩具戳到），给到及时提醒，但也不会影响驾驶注意力</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/4.jpg" alt="故事版 4" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">接送孩子途中的亲子对话</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">接送孩子上下学</span><span class="tag">在车内 - 行驶中</span><span class="tag">关怀陪伴</span></div>
+            <div class="stext"><p>接孩子回家时，我很想和他聊聊今天在学校的事，这段路上往往是一天里难得能轻松说话的时间。<br>但开车时我得盯着路，很难一直留意他的表情和语气变化。他有时兴致很高，有时又不想多讲；我只能边开边问“今天怎么样”，或者后视镜里观察一下他的状态，很难及时接住他的情绪<br>我希望这段车程不只是接送，还能真正陪到他，及时察觉他的状态变化，找到合适的共同话题一起聊，也能在他需要时给一点陪伴和引导。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>接送孩子出行，能及时留意到孩子的情绪状态（开心或低落），及时接住他的情绪并自然地聊起来，让这段路成为真正的情感陪伴</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/79.jpg" alt="故事版 79" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">带年长的奶奶出行</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">接送长辈</span><span class="tag">靠近车 -  进入车</span><span class="tag">身心舒适</span></div>
+            <div class="stext"><p>奶奶年纪大了，我会定期开车带她去医院检查。奶奶膝关节和腰都不太好，入座姿态和座椅角度不好，都会导致身体上的疼痛<br>上下车她的膝盖不能大幅弯曲、抬腿。座位如果太低，坐下和起身要靠腰猛发力。每次入座我都会后排空间调大一点，调高后排座椅角度和位置，扶她慢慢坐稳。<br>入座后，再把副驾座椅靠后，腿托升起来，脚搭上去让膝盖能舒服一些。靠背调直一些<br>每次上车都是我帮她调，但她总是怕我麻烦，口头总是说可以了可以了</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>带腿脚不便的长辈出行，希望可以把座椅调整到她合适入座和行车时乘坐的最佳姿态，提升舒适性</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/157.jpg" alt="故事版 157" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">长辈自主操作后排屏幕</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">接送长辈</span><span class="tag">在车内 - 准备出发</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>带父母出行，他们入座后排后，我让他们需要的话自己调一下座椅和空调，坐得舒服些。<br>可屏幕内里面功能又多、字又小，他们根本不好操作。这种界面设计对他们一点都不友好。他们不好操作，也怕麻烦我停车帮忙，干脆说“不用了，这样就行”。一路上将就着坐</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>长辈能轻松操作屏幕里的各项功能操作（座椅角度、空调等），能自主调整到所需状态，不会看不清、不好点，也不必一直将就或担心开口麻烦我</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/7.jpg" alt="故事版 7" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">孩子在后排睡着了</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">接送孩子上下学</span><span class="tag">在车内 - 行驶中</span><span class="tag">关怀陪伴</span></div>
+            <div class="stext"><p>周日下午我自己开车接孩子下兴趣班，他一开始还在后排跟我聊天，聊着聊着后面安静下来，后视镜里看，才发现他已经睡着了。<br>发现他睡熟后，我会趁红绿灯停车间隙把后排风量和导航声音调小，关上遮阳帘、调暗灯光，免得他被风吹或突然吵醒。 如果中控屏幕里能帮忙调二排座椅躺姿就好了<br>有时顾着开车，经常不能及时发现，而且一套操作开车时也很不方便</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当孩子在后排不知不觉睡着时，我希望能及时发现，并在不分散驾驶注意力前提下，让后排环境变得更适合睡眠</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/36.jpg" alt="故事版 36" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">和孩子聊天互动时，突然要接个电话</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">接送孩子上下学</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>接到孩子回家路上，孩子迫不及待想想要分享今天的新发现，兴奋地和我聊天。<br>但突然有一个电话过来要接听，孩子还在后面一直想要互动，又想让我帮他播儿歌，让我没法很好地讲电话<br>这时候真希望语音助手可以成为自己的嘴替，聪明地把话接过去，和孩子快乐对话。播放的儿歌也可以默认地把声场跳到二排</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>和孩子互动过程中，突然有事情要处理，AI助手可以及时帮我接过话题并继续陪伴孩子，让我可以快速抽离出来，不受打扰地处理好事情</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/63.jpg" alt="故事版 63" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">车内儿童学习空间调整</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">接送孩子上下学</span><span class="tag">在车内 - 长时驻车</span><span class="tag">关怀陪伴</span></div>
+            <div class="stext"><p>孩子每周一、三晚上有手球课。兴趣班和家是两个方向，为了不来回折返，我接到他后会先停车，让他在车里写作业、吃晚饭，再直接去上课。暑假自驾时，也会趁服务区停车把作业写完。<br>我会展开后排小桌板、调好座椅，坐在旁边陪着。 车里毕竟不是固定书桌，座椅、桌板和光线每次都要重新调整。我要先跑到前排座椅调节，把桌板调到合适高度，然后再帮小孩调后排座椅。<br>傍晚车内光线不够，我只能另外装一盏支架灯；他写着写着又容易低头、弯腰，我还得不时提醒「坐直一点」。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>陪同孩子在车内写作业，我希望车内能提供合适的环境（光线充足、座椅角度合适等），规避昏暗用眼、弯腰驼背等健康问题</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/95.jpg" alt="故事版 95" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">下班途中接娃再接配偶的多站导航</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">接送孩子上下学</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>接两个娃下课，再去接老婆下班，这条线几乎每天都走。导航里要陆续把地址一个个加进去。<br>本来就赶时间，但每次上车后，都得要在地库里重复同一套再出发：搜地址、添加途经点、确认顺序。天天如此，很繁琐</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>每天接娃再接配偶的多站地址导航，行程相对固定，希望可以减少这些重复、繁琐的操作流程</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/108.jpg" alt="故事版 108" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">帮后排乘客解锁儿童锁</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">接送孩子上下学</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>孩子坐后排时总想开窗、乱按车门，我会开儿童锁，避免他在行车过程中误操作。安全是安全了，但现在的锁定方式经常是一刀切。<br>有时大人和孩子坐在后排时，车门、车窗、座椅、空调甚至屏幕都会一起被限制。大人想调一下靠背或温度也用不了，只能叫前排帮忙；下车时还得等人从外面开门。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当孩子与成人同坐后排时，希望车辆既能限制孩子误操作、乱按等，但也不影响后排成人的正常调节操作，不必总依赖前排代劳操作</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/179.jpg" alt="故事版 179" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">带孩子美术课绘本</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">接送孩子上下学</span><span class="tag">在车内 - 准备出发</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>接孩子放学的路上，他跟我说，明天有美术课，老师要带绘本。回家后我们会提前找出来、放好，觉得第二天肯定不会忘。<br>结果第二天早上出门还是忘了，开出去一段，孩子才突然说绘本好像还在家里。只能掉头回去取，再重新送一趟。尤其赶上学高峰时更慌，最后还迟到了</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>接送孩子上学，当天美术课所需的绘本材料已备好却忘记带上车，希望出门前或刚上车时能核对齐，避免半路才发现折返</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="家庭" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/181.jpg" alt="故事版 181" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">装婴儿车时放倒三排座椅</h3></div>
+            <div class="stags"><span class="tag">家庭 - 家人日常接送</span><span class="tag">小月龄宝宝出门</span><span class="tag">靠近车 - 到车旁</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>开车带小宝宝去公园，婴儿车比较大，需要把三排座椅放倒后才好放进去<br>打开后备箱了才发现，上次三排坐过人，座椅还立着。只能临时去放倒座椅，二排座椅还很靠后挡着，先调一下才能倒平。<br>本来抱娃、拿包就手忙脚乱，还要在车尾折腾一通，非常不方便。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当带宝宝出门时，希望可以快速地把三排放倒，腾挪出后备箱空间放置婴儿车，避免在车外临时折腾调节座椅，手忙脚乱的</p></div>
+            </div>
+          </div>
+        </article>
+</section>
+      <section class="sgroup" data-scene="工作 - 休闲商务社交">
+<div class="sgroup-head">工作 - 休闲商务社交<span class="cnt">4</span><span class="rule"></span></div>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/109.jpg" alt="故事版 109" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">接待客户前的座舱设定状态调节</h3></div>
+            <div class="stags"><span class="tag">工作 - 休闲商务社交</span><span class="tag">商务宴请应酬</span><span class="tag">靠近车 -  进入车</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>这车经常在家用和商务接待之间切换。<br>有次刚把太太送到，副驾座椅被她调得很后面，下一趟马上要去接客户。我得赶紧把副驾往前挪。<br>小孩坐后排，儿童锁我一般默认开着，但接客户时就经常忘了提前解锁，导致对方从里面打不开门<br>每次场合一切换，一些设定就要重新整备，经常一忙就忘了，场面挺尴尬。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当车辆从家用切换至商务接待场合时，希望之前的一些座舱设定项（如座椅位置、儿童锁等）能按场合快速对齐，以免遗忘而导致场面的尴尬</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/24.jpg" alt="故事版 24" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">车内破冰闲聊</h3></div>
+            <div class="stags"><span class="tag">工作 - 休闲商务社交</span><span class="tag">商务宴请应酬</span><span class="tag">在车内 - 行驶中</span><span class="tag">社交价值</span></div>
+            <div class="stext"><p>刚接触不久的客户前来拜访，在车上这段路程往往轻松聊聊，免得一路沉默。<br>我会找些能让对方感兴趣的话题打开局面：聊近况、聊见闻。有的客户对我的车感兴趣，我就介绍几个亮点，打开话题。有时候也会根据客户的城市、行业等背景做点功课，备几句能聊的。<br>但很多时候并不清楚客户喜好，不知道聊什么，冷场一两分钟就尴尬。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>接送刚接触不久的客户，想要找点能让对方感兴趣、聊得起来的话题作为谈资，让车内氛围轻松，拉近距离</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/73.jpg" alt="故事版 73" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">晚宴后送客户返程</h3></div>
+            <div class="stags"><span class="tag">工作 - 休闲商务社交</span><span class="tag">商务宴请应酬</span><span class="tag">在车内 - 行驶中</span><span class="tag">关怀陪伴</span></div>
+            <div class="stext"><p>和客户饭局结束后，开车送客户回去<br>刚上车时我们通常还会继续聊天，但聊着聊着，客户已经在后排睡着了，我过了一会儿从后视镜才发现。这时我会把温度调高一点，声音调小，再调整遮阳帘和车内灯光，尽量不吵醒他。<br>有时候开车没注意，还一直在和他说话，他估计也是疲惫着简单附和，挺不体面的</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当商务饭局后的客户在返程后排逐渐困倦时，我希望能更及时地发现他的状态，并放低音量、收敛交谈并调整温度与光线，以便客户安稳休息，也让接待过程更体面</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/10.jpg" alt="故事版 10" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">接待客户前的车内杂物收拾</h3></div>
+            <div class="stags"><span class="tag">工作 - 休闲商务社交</span><span class="tag">商务宴请应酬</span><span class="tag">远离车-  即将出发</span><span class="tag">社交价值</span></div>
+            <div class="stext"><p>车都是家商混用，刚接完孩子放学，又要赶过去和客户吃饭。<br>后排还留着小孩的玩具，有时我根本没注意到。心里想着赶时间出门，也来不及细看<br>等客户拉开车门上车，才发现玩具还摊在后座上，只能临时塞到后备箱，挺尴尬的。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>车辆经常家用商务场合切换，希望能够记得在客户上车前，能注意到后排散落的物品（如孩子的玩具、睡觉的毯子等），避免客户来了才发现、临时收拾、尴尬又显得不专业</p></div>
+            </div>
+          </div>
+        </article>
+</section>
+      <section class="sgroup" data-scene="工作 - 正式商务接送">
+<div class="sgroup-head">工作 - 正式商务接送<span class="cnt">10</span><span class="rule"></span></div>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/16.jpg" alt="故事版 16" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">接送客户的隐私空间</h3></div>
+            <div class="stags"><span class="tag">工作 - 正式商务接送</span><span class="tag">接待VIP领导/客户</span><span class="tag">在车内 - 行驶中</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>开车接待领导或客户时，有时候路上会突然有其他工作相关的提醒和来电打进来<br>手机默认连着车上的蓝牙，有时一些电话播报，或者之前设定的提醒信息，突然在行程途中播报出来<br>尤其是一些和竞争对手相关的，名字一报，车上人都听见了。既尴尬又有泄密风险。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当正式接待领导或客户同乘时，希望一些敏感的信息（日程、来电、提醒信息等）不要突然播报或显示，保护好隐私、避免失礼</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/75.jpg" alt="故事版 75" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">商务接待的仪式感</h3></div>
+            <div class="stags"><span class="tag">工作 - 正式商务接送</span><span class="tag">接待VIP领导/客户</span><span class="tag">靠近车 -  进入车</span><span class="tag">社交价值</span></div>
+            <div class="stext"><p>商务接待贵宾时，对用车的仪式感体验还是比较在意。 希望有相应的迎宾仪式感，舱内氛围也能有尊贵感，放一点合适的轻音乐，让对方一坐进来就觉得被郑重对待。<br>可现实里，后排屏幕里的壁纸显得不够正式，一点进去，桌面上显示的还是孩子最近看的动画片历史。整个座舱氛围不像在接待贵宾。<br>家用留下的痕迹摆在那儿，一时也来不及清干净。对方刚上车，座舱仍像日常带娃、随手用车的状态，尊贵感起不来。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当商务接待贵宾上车时，希望座舱能呈现正式的迎宾与尊贵氛围（如正式壁纸、抹去屏幕桌面孩子动画片观看历史等），以免仍留着家用痕迹、对方一坐进来就感觉不够正式。</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/117.jpg" alt="故事版 117" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">正式得体的车内对谈环境</h3></div>
+            <div class="stags"><span class="tag">工作 - 正式商务接送</span><span class="tag">接待VIP领导/客户</span><span class="tag">在车内 - 行驶中</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>接一些重要领导时，车上会有一段寒暄。场合偏正式，我更在意气氛是否稳重、得体。<br>领导在说话或我们刚寒暄上，语音助手有时会突然开口：主动推荐、插播天气，或把车内闲聊误当成指令。<br>系统一抢话，谈话就被打断，显得不够正式，薄弱的边界感，也让人觉得车机不懂分寸。有其他人同乘的时候非常尴尬</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当接重要领导并在车上正式寒暄时，希望座舱（语音助手、声音播报等）克制少打扰、少主动发言、少抢话，维持正式场合该有的谈话节奏与体面。</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/12.jpg" alt="故事版 12" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">接待VIP客户的行前物品准备</h3></div>
+            <div class="stags"><span class="tag">工作 - 正式商务接送</span><span class="tag">接待VIP领导/客户</span><span class="tag">靠近车 - 到车旁</span><span class="tag">关怀陪伴</span></div>
+            <div class="stext"><p>接不同客户时，我会尽量记住对方的情况，再决定车上放什么。<br>比如有的客户有糖尿病，就准备的水和零食一定要是无糖的；有的容易晕车，会先备上晕车贴或晕车药。有的爱喝咖啡，我会提前去买一杯星巴克。<br>这些细节要靠自己记，也要在出门前专门准备。客户一多，谁适合什么、什么时候该提前买，就容易混。一旦记岔或漏备，接待就显得不够用心。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>接待有特定偏好或禁忌的重要客户，希望能按对方情况准备合适的水饮、咖啡、药品等，以免通用备品不合用或遗漏关键细节</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/154.jpg" alt="故事版 154" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">给到后排客户的舒适体验</h3></div>
+            <div class="stags"><span class="tag">工作 - 正式商务接送</span><span class="tag">接待VIP领导/客户</span><span class="tag">在车内 - 准备出发</span><span class="tag">身心舒适</span></div>
+            <div class="stext"><p>客户上车后，对我这辆车的后排不太熟，空调、座椅怎么调往往不会。<br>我需要口头跟他们说一下，但按键多、位置又不统一，对方经常分不清到底是哪一个。只能转身回头，用手比划指一下<br>有时候还会经常不小心按错按键，或者调不舒服就干脆放弃只能硬坐着</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>接送客户，希望后排的舒适调节（空调座椅等）对客户来说好上手，能够自己调到舒服状态，我也不用总是回头指点。</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/65.jpg" alt="故事版 65" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">客户到车边上临时调座位空间</h3></div>
+            <div class="stags"><span class="tag">工作 - 正式商务接送</span><span class="tag">接待普通客户/团队</span><span class="tag">靠近车 - 到车旁</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>到机场接两名来拜访的客户。事先知道对方体型偏大，我特意把前排移到最前，好让后排腿部空间宽敞一些。<br>接到人后才发现，这次临时多了一位同行，要坐在副驾。到车边时，我一边帮着搬行李，一边又得赶紧把副驾座椅往后调到合适位置，生怕客户站着等太久，显得手忙脚乱。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当机场接客时实际乘车人数与事先预想不一致时，希望能更快调整好座位空间，以免客户在车边久等、场面显得仓促。</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/13.jpg" alt="故事版 13" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">机场停车场等待客户</h3></div>
+            <div class="stags"><span class="tag">工作 - 正式商务接送</span><span class="tag">接待VIP领导/客户</span><span class="tag">在车内 - 准备出发</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>车停在机场候客区或停车场，提前抵达后，我就在车里刷抖音、回微信，想把这段等待打发过去。<br>需要留意飞机抵达时间，并估摸着客户从下飞机再到通关、取行李时间，然后提前下车走过去接<br>车内等待时间，人其实放松不下下来，还是会频繁切回去看航班动态，也怕漏了客户电话，等待时间估摸不好，两边都要相互等。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>在机场等候客户时，希望能掌控好时间节奏，等待过程能安心放松打发时间，也不会错过要出发的时间</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/167.jpg" alt="故事版 167" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">按航班时刻提前出发去接机</h3></div>
+            <div class="stags"><span class="tag">工作 - 正式商务接送</span><span class="tag">接待VIP领导/客户</span><span class="tag">在车内 - 准备出发</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>接客户前，我会先问清航班号记下来，再按到达时间提前出发，到机场等他们出来。流程我自己觉得挺稳的。<br>可航班有时会延误。出发前我没再查一眼动态，人已经开到机场，才发现飞机还要再等很久。<br>路上时间白耗了，停车费也跟着涨。明明记了航班号，关键变更却漏掉了，只能干等。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当按航班时刻提前出发去接机时，希望出发前能及时察觉到达时间变更（如延误），以免人已到场才发现还要空等很久。</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/133.jpg" alt="故事版 133" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">接待海外的客户</h3></div>
+            <div class="stags"><span class="tag">工作 - 正式商务接送</span><span class="tag">接待普通客户/团队</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>公司做海外生意，常有国外客户来访。为了表示尊重，我一般自己开车去接。英文一般，路上也只能做些有限的寒暄。<br>车开过一些特色建筑、街道时，他们会多问两句。我想展开介绍，可词汇量跟不上，话到嘴边经常卡壳，停顿好几秒也接不上。<br>本该轻松的行车气氛，就卡在这些停顿里。聊不顺之后，他们也不太再往下延展话题，同车的闲聊渐渐冷下来。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当开车接送海外客户，希望表达的时候能聊得顺，以免因词汇卡壳让本该轻松的车内闲聊冷场</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/15.jpg" alt="故事版 15" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">展示项目材料</h3></div>
+            <div class="stags"><span class="tag">工作 - 正式商务接送</span><span class="tag">车内谈生意</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>接客户一起去考察项目地，因为要在路上聊事，所以我让公司的下属开车，我可以专心和客户在后排聊天<br>我会在路上先把项目的一些进展情况和他介绍一下，提前有个铺垫。 主要是以口头聊为主<br>有时候讲到某个业务细节，口头讲不清，需要展示材料。但是自己手机展示太小 而且隐私考虑不太方便。 用的后排屏翻找、或者拿出电脑，又要花费时间找材料、到第几页，让客户等也很尴尬</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>与客户在后排谈论项目，需要展示特定材料时，能快速地进行调用找到相应材料，减少对话打断、少让客户干等</p></div>
+            </div>
+          </div>
+        </article>
+</section>
+      <section class="sgroup" data-scene="工作 - 工作代步">
+<div class="sgroup-head">工作 - 工作代步<span class="cnt">10</span><span class="rule"></span></div>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/144.jpg" alt="故事版 144" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">提前规划多地出行的复杂行程</h3></div>
+            <div class="stags"><span class="tag">工作 - 工作代步</span><span class="tag">跑多地办事</span><span class="tag">远离车-  未出发</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>我做销售的，一天里常要连跑好几个点：有的会议时间是固定的，有的拜访时间灵活，中间时间空档还想塞进银行办事、买东西这类私事<br>出发前一天，我会用手机地图，把地点一个个加进去，再按时间和路况改顺序。<br>每次都要在 App 里反复规划好久，比如改完发现某个约赶不上，或者修改后路线又不顺，又得推倒重排。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当一天要前往多地办事，希望可以基于约定的地点、时间要求，快速安排出一条时间和路线最优的出行方式，减少反反复复路线规划带来的麻烦</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/140.jpg" alt="故事版 140" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">因客户临时改约调整后续行程安排</h3></div>
+            <div class="stags"><span class="tag">工作 - 工作代步</span><span class="tag">跑多地办事</span><span class="tag">在车内 - 准备出发</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>有时已经按约定好了的见面时间临时要调整，“原来两点的会改到四点行吗？” 一个时间变了，后面的安排也会跟着受影响。<br>我只能重新打开手机地图，尝试调整拜访顺序，看看能否先去其他地点，再赶回改约的客户那里。<br>我最担心的是只顾着调整当前这一站，却让后面的行程绕路或迟到。我希望临时变动发生后，能尽快判断剩余行程怎么调整更合适。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当外勤途中行程有临时变更（如有客户临时修改见面时间），希望快速看清变动对后续行程的影响，调整至最优出行方案、减少绕路和迟到</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/9.jpg" alt="故事版 9" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">提前约定和记录出行的计划</h3></div>
+            <div class="stags"><span class="tag">工作 - 工作代步</span><span class="tag">跑多地办事</span><span class="tag">远离车-  未出发</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>我开广告设计公司，平时大半时间需要在外跑客户、开会、跑项目，一般会提前几天陆续规划好<br>约时间这件事很碎：接机时间、开会地址、客户公司...  还经常遇到这个客户微信里改了地点，那个客户电话里定了明天上午，还有人临时加一句“到时候再对一下时间”。<br>信息都散在不同聊天和通话里。我想起来了，就随手往手机备忘录里塞几句；忙起来，有时连谁几点、去哪家都对不上，只能再翻聊天记录或回拨确认。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>经常需要外出多地办事，外勤约定通过微信和电话不同渠道陆续敲定时，我希望这些散落在各个渠道的出行时间和地点能被及时记全和管理，让出行安排不会遗漏</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/142.jpg" alt="故事版 142" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">临时离车办事</h3></div>
+            <div class="stags"><span class="tag">工作 - 工作代步</span><span class="tag">跑多地办事</span><span class="tag">离车 -  临时离开</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>经常去到周边城市跑项目，很多地方都不熟。有时只是上楼送份材料、签个字，几分钟就能回来，但附近一时找不到车位停<br>想要路边临时停一下。但经常也分不清这里是不是严管路段、有没有电子眼、离开车辆几分钟会不会被认定为违停。<br>有些地方看着能靠边，心里却没底。继续绕着找停车场，又怕耽误客户时间。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>在陌生地点需要短暂离车办事时，我希望及时了解当前路段的停车限制（会不会被拍等），以便在不耽误行程的同时避免违规停车</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/143.jpg" alt="故事版 143" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">开车时候收到各类消息</h3></div>
+            <div class="stags"><span class="tag">工作 - 工作代步</span><span class="tag">移动办公</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>我多数时间都在外面跑业务，开车时也会不断收到客户和同事的微信消息和电话。<br>有些很紧急，比如要确认项目信息，最好能尽快回应。有些则只是普通群聊或可以等停车后再回复的通知。<br>我希望行车途中能先分清哪些消息和重要的电话必须马上关注、哪些可以晚点处理，也不被大量普通消息反复打扰。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>开车时收到许多消息，希望优先筛选出真正重要需要关注的信息，将不紧急或操作复杂的事项留待停车后处理，以免被无关通知分散注意力，或错过重要信息</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/151.jpg" alt="故事版 151" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">开车时和客户通话记事</h3></div>
+            <div class="stags"><span class="tag">工作 - 工作代步</span><span class="tag">移动办公</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>开车时客户打来电话，临时约见面时间、确认地点。对方说得很快，我一边盯路，一边听他说几点、去哪里碰面<br>本来电话里的对话就容易记不全也记不准，而且也来不及掏出手机记在备忘录里 。  经常不得不到了发消息再跟客户确认一遍，既耽误事，又觉得尴尬</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当开车途中与客户电话敲定碰面时间或地点时，希望这些关键信息能被及时、准确地留下来，以免事后遗忘</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/160.jpg" alt="故事版 160" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">赴正式会议前在车内更换正装</h3></div>
+            <div class="stags"><span class="tag">工作 - 工作代步</span><span class="tag">跑多地办事</span><span class="tag">在车内 - 短时驻车</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>下一场要去开会，场合比较正式，我得在车上换一身着装。西服和皮鞋已经备在后排。<br>到地方附近我会钻到后排，把前排座椅往前挪，两侧遮阳帘升起来，再换上西装皮鞋。<br>可后排空间本来就紧，还要顾着隐私。一通操作下来，时间本来就紧，弄完一身急，也挺狼狈。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当赶赴正式会议需要在驻车时更换正装时，希望尽快获得车内相对宽敞且私密的换装条件，不必麻烦地反复调整车辆</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/166.jpg" alt="故事版 166" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">开车时发送工作文件</h3></div>
+            <div class="stags"><span class="tag">工作 - 工作代步</span><span class="tag">移动办公</span><span class="tag">在车内 - 行驶中</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>开车在高速上，这时候客户来电话要让我发份材料，有时是要在某个材料里查一下历史报价，要得比较急。<br>有时候事情比较急，想找个服务区再停下处理，但是又担心等太久，不得不开车时拿出手机翻找，挺危险的。心理负荷与分心风险双升</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当高速行驶中，有工作上的文件材料需要查询或操作（比如客户着急要某份材料或查历史报价），希望在不影响安全地前提下高效地处理好事情，不耽误急事</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/17.jpg" alt="故事版 17" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">临时驻车开会</h3></div>
+            <div class="stags"><span class="tag">工作 - 工作代步</span><span class="tag">移动办公</span><span class="tag">在车内 - 长时驻车</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>在外面办事时，临时接到和客户的线上会议，附近又没有合适会议室，只能把车停进停车场开。<br>关上车门后，外面仍可能传来车流声、鸣笛声、旁边车开关门的动静。我一边开会，一边担心这些声音被客户听到<br>如果需要开视频则会更尴尬，即便把车的阅读灯打开、换上虚拟背景，但是车内仍然显得很暗<br>尤其是一些比较重要的客户，不想让线上对方知道人正在车里，显得不够正式。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当只能停在车内临时与客户开线上会时，希望车内环境和车外嘈杂声尽量不进入对方听感，以免暴露在车内开会、影响专业印象</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="工作" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/112.jpg" alt="故事版 112" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">车内办公前的环境布置</h3></div>
+            <div class="stags"><span class="tag">工作 - 工作代步</span><span class="tag">移动办公</span><span class="tag">在车内 - 长时驻车</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>项目地附近没有合适办公场所时，我只能找到路边停车的地方，到二排处理邮件、改方案、开会。<br>我得先把前排挪前腾开空间，找地方架电脑，再扯充电线、调温度和座椅，打开 Wifi，办公完了还要把东西收回去，恢复成能载人的状态。 太麻烦了</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当需要把车辆临时改成办公空间时，希望更快完成前置各项布置工作，以便尽快进入工作，少在准备环节消耗时间。</p></div>
+            </div>
+          </div>
+        </article>
+</section>
+      <section class="sgroup" data-scene="个人 - 车内独处">
+<div class="sgroup-head">个人 - 车内独处<span class="cnt">6</span><span class="rule"></span></div>
+<article class="scene-row" data-pos="个人" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/136.jpg" alt="故事版 136" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">车内独处缓解疲惫和情绪</h3></div>
+            <div class="stags"><span class="tag">个人 - 车内独处</span><span class="tag">放松舒缓</span><span class="tag">在车内 - 长时驻车</span><span class="tag">身心舒适</span></div>
+            <div class="stext"><p>忙完一天下班，回到车上，身上已经很累。有时还带着工作里的负面情绪：被老板骂过、会上吵过，脑子里还在反复回放。<br>车门一关，车里成了短暂的独处空间。我需要一点时间把火气压下去，不然一进家门，家里人最先接到的是我的坏心情。有时候会抽根烟，然后做个冥想和深呼吸，或者下班路上听歌<br>真正难受的不是路上堵不堵，而是工作情绪还挂在身上，还没缓冲好就要切换成家里的角色。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当疲惫、压力、情绪积攒，希望在车内时间能把状态舒缓下来，以免把情绪带进家庭或工作</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="个人" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/191.jpg" alt="故事版 191" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">等人时想在车里看剧放松</h3></div>
+            <div class="stags"><span class="tag">个人 - 车内独处</span><span class="tag">娱乐消遣</span><span class="tag">在车内 - 长时驻车</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>等孩子下课、等客户见面，几十分钟这段空档车里就成了自己的空间。买车时想象的画面是关上门看会剧、二排放倒、屏幕打开、氛围调好，沉浸一会儿。<br>可一通操作要花时间，而且还惦记着等一下要接人，时不时拿起手机看一下时间和手机里消息<br>怕沉浸过头忘记时间，或者到点了还得自己把空间收拾回去、接客户的话还要把观影痕迹去掉。一想麻烦，有时候干脆就刷刷手机应付下时间了。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当停车等人、想用车内看剧放松时，希望娱乐布置与收尾不拖沓、且不耽误接下来的接人安排，以便这段等待真正用得上、又不用一直惦记时间。</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="个人" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/193.jpg" alt="故事版 193" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">车内情绪树洞</h3></div>
+            <div class="stags"><span class="tag">个人 - 车内独处</span><span class="tag">放松舒缓</span><span class="tag">在车内 - 长时驻车</span><span class="tag">关怀陪伴</span></div>
+            <div class="stext"><p>一个人在车里的时候，有些压力没处说。偶尔想给朋友打电话倒一倒，又怕对方没空，也不想把烦心事甩给他们。<br>有时就跟语音助手随便聊聊，但它也不是专业的情感咨询或者健康顾问，多半只能接几句闲聊，并不真正懂我眼下的情况，说完还是闷着。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当一个人在车里压力积着没处说时，希望能有个不增加朋友负担、又能听懂自己处境的倾诉对象，以便把烦心事说出去，并且给可以给到自己排解情绪的建议</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="个人" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/23.jpg" alt="故事版 23" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">车内午休时播放白噪音</h3></div>
+            <div class="stags"><span class="tag">个人 - 车内独处</span><span class="tag">休息小憩</span><span class="tag">在车内 - 长时驻车</span><span class="tag">身心舒适</span></div>
+            <div class="stext"><p>车停在公司楼下，中午我会回车上午休大约一小时。先调好白噪音，再定个闹钟，方便自己入睡。<br>可这声音要么一直放着，要么到点就关，很机械。定时关总是碰运气：设短了，人还没睡着声音就停；设长了，睡着后还在响，有时又把我吵醒。有些冥想/白噪音阶段还特别短，每隔三四十秒循环一遍，听久了反而像噪音。<br>想靠白噪音帮忙入睡，结果时长和循环节奏总对不上我的入睡节奏。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当中午在公司楼下用白噪音助眠时，希望声音时长与循环节奏能贴合真实入睡过程，以免未睡先停或睡着后仍被打断。</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="个人" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/78.jpg" alt="故事版 78" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">车内午休难以入睡</h3></div>
+            <div class="stags"><span class="tag">个人 - 车内独处</span><span class="tag">休息小憩</span><span class="tag">在车内 - 长时驻车</span><span class="tag">身心舒适</span></div>
+            <div class="stext"><p>准备在车里休息一会儿，身体已经躺下了，可神经还处在兴奋、紧绷的状态，短时间内放不下来。<br>只能闭着眼躺着，脑子还在转着工作的事。越急着睡越清醒，时间一点点溜走。<br>明明抽出时间来歇，结果大半时间耗在「躺着睡不着」上，休息质量很差，起来也不解乏。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当在车里准备短憩，但身心仍紧绷时，希望能更快从兴奋状态放松过渡到可休息的状态，快速得到休息放松</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="个人" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/98.jpg" alt="故事版 98" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">车内观影娱乐的操作控制</h3></div>
+            <div class="stags"><span class="tag">个人 - 车内独处</span><span class="tag">娱乐消遣</span><span class="tag">在车内 - 长时驻车</span><span class="tag">便利效率</span></div>
+            <div class="stext"><p>驻车后主驾驶躺着休息，用中控屏幕看看剧。看到某处想快进、拖进度、跳一下片段，是很常见的操作。<br>可人已经躺平了，屏幕还在原来的位置。要调进度就得卷腹起身去够中控，调完再躺回去；用语音说「快进到某某情节」又很难说清楚具体位置。<br>躺着本该放松，却为了一点点进度调节反复起身，感到非常麻烦，观影节奏也被打断。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当驻车躺着观影，想需要进行播放控制时（如调节播放进度），希望不必反复起身够中控也能完成细调，以便躺姿休息不被频繁打断。</p></div>
+            </div>
+          </div>
+        </article>
+</section>
+      <section class="sgroup" data-scene="通用/特殊">
+<div class="sgroup-head">通用/特殊<span class="cnt">6</span><span class="rule"></span></div>
+<article class="scene-row" data-pos="通用" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/183.jpg" alt="故事版 183" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">把车停在人流/车流大的地方</h3></div>
+            <div class="stags"><span class="tag">通用/特殊</span><span class="tag">复杂停车环境</span><span class="tag">在车内 - 准备出发</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>车停在商场、老小区、火车站这种人车都多的地方，总担心旁边开门蹭到，或者路过刮一下。<br>虽然这台车有哨兵功能，我会开着。但是每次误报很多，有路人经过离得稍微近一点了，就会误识别成剐蹭<br>每次上车车机里往往堆着几十条记录，刷过去也分不清哪条真有事，该留意的反而容易漏掉</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当停在商场、老小区或车站旁这类人车密集处、又开着哨兵时，希望哨兵能记录真正需要被关注的信息（如剐蹭等），减少无效的误报记录</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="通用" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/186.jpg" alt="故事版 186" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">车辆起步时周边有障碍物</h3></div>
+            <div class="stags"><span class="tag">通用/特殊</span><span class="tag">复杂停车环境</span><span class="tag">在车内 - 准备出发</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>车比较大，地库、老小区里起步时，旁边常有柱子、邻车或杂物。<br>刚挂挡往外挪，车头、A 柱一带本来就看不全，一走神就容易蹭到盲区里的东西，万一蹲这个孩子或者放着个小石墩，在开始为看下去完全是真空的。车越大，起步那一下越要多瞄几眼，稍不留神就剐一下。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>车比较大，当从车位或路边起步、四周有柱子邻车等障碍时，希望起步前能清楚周边近距情况，以免盲区没看到就蹭上。</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="通用" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/187.jpg" alt="故事版 187" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">关注车辆油耗情况</h3></div>
+            <div class="stags"><span class="tag">通用/特殊</span><span class="tag">补能场景</span><span class="tag">在车内 - 短时驻车</span><span class="tag">经济价值</span></div>
+            <div class="stext"><p>我开台车油表总是掉得很快，开支大。总感觉和其他差不多出行方式的车友对比起来，百公里油耗都比他们高，加油勤<br>到底是驾驶习惯、载重物、胎压、还是什么原因把油耗推高了，好对症改一改。可仪表只有一个总油耗或平均油耗，分不清具体是哪段时间，什么原因导致</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当车辆油耗持续较高，希望能分清主要是哪些原因在费油（驾驶习惯、载重物、胎压等），以便作出调整、节省用车成本</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="通用" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/190.jpg" alt="故事版 190" loading="lazy" /><span class="prio">高价值</span></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">低底盘车过马路牙子与烂路</h3></div>
+            <div class="stags"><span class="tag">通用/特殊</span><span class="tag">复杂停车环境</span><span class="tag">在车内 - 行驶中</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>我车底盘比较低，遇到马路牙子、烂路、斜坡时，总拿不准高度够不够，能不能开过去，有时候还要下车看一下<br>有时候犹豫半天还是硬开，过去才听到底盘「咣」一下，或者碰到前铲。 有时候干脆放弃绕开，心里没底。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>车辆底盘低，面对马路牙子、烂路、斜坡等路面时，希望在驶上前就能判断是否有磕碰风险，以免开过去了才磕碰</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="通用" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/189.jpg" alt="故事版 189" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">寻找目的地附近停车场</h3></div>
+            <div class="stags"><span class="tag">通用/特殊</span><span class="tag">复杂停车环境</span><span class="tag">在车内 - 行驶中</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>我车比较大，到市区老商场、医院一带找车位时，窄车位、限高地库、立体车库这类经常进不去。<br>跟着车机推的停车场开过去，到了才看见限高牌或机械库，只能掉头再找。白跑一趟不说，目的地附近还得重新绕。</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>车身尺寸大，对停车位有特定要求（不限高、非立体车库等），希望车机系统推荐停车场时能考虑这些因素，避免到了后才发现停不进去</p></div>
+            </div>
+          </div>
+        </article>
+<article class="scene-row" data-pos="通用" data-expanded="false">
+          <div class="sboard-wrap"><img class="sboard" src="assets/storyboard/192.jpg" alt="故事版 192" loading="lazy" /></div>
+          <div>
+            <div class="stitle-row"><h3 class="stitle">下车安全提醒</h3></div>
+            <div class="stags"><span class="tag">通用/特殊</span><span class="tag">复杂停车环境</span><span class="tag">在车内 - 准备下车</span><span class="tag">安全安心</span></div>
+            <div class="stext"><p>车临时停在路边或一些比较复杂的地方，后排乘客要下车时，我总会想帮他们留意一下门外：有没有台阶、积水、低矮护栏、花丛，或者离邻车太近开门会蹭到。<br>可有时候忙着停稳、拿东西，来不及看全，提醒也没跟上。后排一开门，还是可能踩进水里、绊一下，或者门边蹭到障碍物</p><button class="smore" type="button" hidden>展开</button></div>
+            <div class="spair">
+              <div class="sbox insight"><b>需求洞察</b><p>当临时停在复杂路边、后排要开门下车时，希望一些潜在风险提醒到位（如台阶、积水、护栏花丛或邻车距离等），以免后排乘客踩空、弄湿或开门蹭到邻车等意外风险</p></div>
+            </div>
+          </div>
+        </article>
+</section>
+      </div>
+    </div>
+  </div>
+
+<dialog class="concept-image-dialog" id="conceptImageDialog" aria-labelledby="conceptImageTitle">
+  <div class="concept-image-toolbar">
+    <h3 id="conceptImageTitle">场景配图</h3>
+    <button class="concept-image-close" id="conceptImageClose" type="button" aria-label="关闭配图" autofocus>×</button>
+  </div>
+  <img class="concept-image-preview" id="conceptImagePreview" alt="" />
+</dialog>
+
+
+<button class="back-top" id="backTop" type="button" aria-label="返回顶部" title="返回顶部" aria-hidden="true">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 19V5"/><path d="M5 12l7-7 7 7"/>
+  </svg>
+</button>
+
+<div class="smask" id="storyMask" role="dialog" aria-modal="true" aria-labelledby="storyTitle">
+  <div class="smodal">
+    <div class="smodal-head">
+      <div>
+        <h3 id="storyTitle">详情</h3>
+        <div class="smodal-tags" id="storyTags"></div>
+      </div>
+      <button class="smodal-close" id="storyClose" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="smodal-body" id="storyBody"></div>
+  </div>
+</div>
+
+<script src="vendor/html2canvas.min.js"></script>
+<script>
+/* —— 场景需求：单页模式 —— */
+(function () {
+  var tab = document.getElementById('tab-scene');
+  var panel = document.getElementById('panel-scene');
+  if (!tab || !panel) return;
+  tab.setAttribute('aria-selected', 'true');
+  panel.setAttribute('data-active', 'true');
+  panel.hidden = false;
+})();
+
+/* —— 量产方案：产品族分类 —— */
+(function () {
+  var content = document.getElementById('massContent');
+  var nav = content && content.querySelector('.mass-nav');
+  var results = document.getElementById('massResults');
+  if (!content || !nav || !results) return;
+  var buttons = content.querySelectorAll('[data-mass-family]');
+  var groups = content.querySelectorAll('.mass-group');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function syncNavHeight() {
+    if (nav.offsetHeight) {
+      content.style.setProperty('--mass-sticky-h', (nav.offsetHeight + 16) + 'px');
+    }
+  }
+  if ('ResizeObserver' in window) new ResizeObserver(syncNavHeight).observe(nav);
+  window.addEventListener('resize', syncNavHeight);
+  syncNavHeight();
+  window.syncMassNav = syncNavHeight;
+
+  buttons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var family = button.getAttribute('data-mass-family');
+      buttons.forEach(function (item) {
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+      groups.forEach(function (group) {
+        var visible = family === 'all' || group.getAttribute('data-family') === family;
+        group.hidden = !visible;
+      });
+      syncNavHeight();
+      if (results.getBoundingClientRect().top < nav.offsetHeight) {
+        results.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'start' });
+      }
+    });
+  });
+})();
+
+/* —— 产品预研：8 个 Agent 独立 Tab —— */
+(function () {
+  var content = document.getElementById('conceptContent');
+  var rail = content && content.querySelector('.concept-rail');
+  var tabs = rail && Array.from(rail.querySelectorAll('[role="tab"]:not(:disabled)'));
+  if (!content || !tabs || !tabs.length) return;
+
+  function activate(tab, focus) {
+    tabs.forEach(function (item) {
+      var selected = item === tab;
+      item.setAttribute('aria-selected', String(selected));
+      item.tabIndex = selected ? 0 : -1;
+      document.getElementById(item.getAttribute('aria-controls')).hidden = !selected;
+    });
+    if (focus) tab.focus({ preventScroll: true });
+  }
+
+  tabs.forEach(function (tab, index) {
+    tab.addEventListener('click', function () { activate(tab, false); });
+    tab.addEventListener('keydown', function (event) {
+      var next = index;
+      if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+      else if (event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = tabs.length - 1;
+      else return;
+      event.preventDefault();
+      activate(tabs[next], true);
+    });
+  });
+})();
+
+/* —— 产品预研：场景配图放大预览 —— */
+(function () {
+  var content = document.getElementById('conceptContent');
+  var dialog = document.getElementById('conceptImageDialog');
+  var preview = document.getElementById('conceptImagePreview');
+  var title = document.getElementById('conceptImageTitle');
+  var close = document.getElementById('conceptImageClose');
+  if (!content || !dialog || !preview || !title || !close) return;
+  var previousOverflow = '';
+
+  content.querySelectorAll('.need-illustration').forEach(function (button) {
+    var hint = document.createElement('span');
+    hint.className = 'illustration-zoom';
+    hint.setAttribute('aria-hidden', 'true');
+    hint.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M9 3H3v6M15 3h6v6M3 15v6h6M21 15v6h-6"/></svg>查看大图';
+    button.appendChild(hint);
+  });
+
+  content.addEventListener('click', function (event) {
+    var button = event.target.closest('.need-illustration');
+    if (!button) return;
+    var image = button.querySelector('img');
+    if (!image) return;
+    title.textContent = button.getAttribute('data-title');
+    preview.src = button.getAttribute('data-original') || image.currentSrc || image.src;
+    preview.alt = image.alt;
+    previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = 'hidden';
+  });
+
+  close.addEventListener('click', function () { dialog.close(); });
+  dialog.addEventListener('click', function (event) {
+    if (event.target !== dialog) return;
+    var bounds = dialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right ||
+        event.clientY < bounds.top || event.clientY > bounds.bottom) {
+      dialog.close();
+    }
+  });
+  dialog.addEventListener('close', function () {
+    document.body.style.overflow = previousOverflow;
+    preview.removeAttribute('src');
+  });
+})();
+
+/* —— 场景需求：正文默认 3 行，超出可展开 —— */
+(function () {
+  var list = document.getElementById('sceneList');
+  if (!list) return;
+
+  function syncMore() {
+    list.querySelectorAll('.scene-row').forEach(function (row) {
+      if (row.getAttribute('data-expanded') === 'true') return;
+      var text = row.querySelector('.stext p');
+      var btn = row.querySelector('.smore');
+      if (!text || !btn) return;
+      btn.hidden = text.scrollHeight <= text.clientHeight + 1;
+    });
+  }
+  window.syncSceneMore = syncMore;
+
+  list.addEventListener('click', function (ev) {
+    var btn = ev.target.closest('.smore');
+    if (!btn) return;
+    var row = btn.closest('.scene-row');
+    var open = row.getAttribute('data-expanded') === 'true';
+    row.setAttribute('data-expanded', String(!open));
+    btn.textContent = open ? '展开' : '收起';
+  });
+
+  window.addEventListener('resize', syncMore);
+  syncMore();
+})();
+
+/* —— 场景需求：按定位（家庭 / 工作 / 个人）过滤清单 —— */
+(function () {
+  var list = document.getElementById('sceneList');
+  var tabsWrap = document.getElementById('scenePosTabs');
+  var caps = document.getElementById('sceneCaps');
+  var sticky = document.getElementById('sceneSticky');
+  var sentinel = document.getElementById('sceneStickySentinel');
+  if (!list || !tabsWrap) return;
+  var subtabs = tabsWrap.querySelectorAll('.subtab');
+
+  function slug(name) {
+    return 'sg-' + encodeURIComponent(name).replace(/%/g, '');
+  }
+
+  function capLabel(name) {
+    if (name.indexOf('通用') === 0) return '通用/特殊';
+    var i = name.indexOf(' - ');
+    return i >= 0 ? name.slice(i + 3) : name;
+  }
+
+  var scrollLock = null;
+
+  function stickyH() {
+    return sticky ? sticky.offsetHeight : 0;
+  }
+
+  function syncStickyH() {
+    document.documentElement.style.setProperty('--scene-sticky-h', (stickyH() + 6) + 'px');
+  }
+
+  function scrollToGroup(el) {
+    if (!el) return;
+    syncStickyH();
+    var head = el.querySelector('.sgroup-head') || el;
+    var y = head.getBoundingClientRect().top + window.pageYOffset - stickyH() - 8;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  }
+
+  list.querySelectorAll('.sgroup').forEach(function (group) {
+    var name = group.getAttribute('data-scene') || '';
+    group.id = slug(name);
+  });
+
+  if (sticky && sentinel && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      sticky.classList.toggle('is-stuck', entries[0] && !entries[0].isIntersecting);
+    }, { threshold: 0 }).observe(sentinel);
+  }
+
+  function visibleGroups() {
+    return [].filter.call(list.querySelectorAll('.sgroup'), function (g) { return !g.hidden; });
+  }
+
+  function setOnCap(sceneName) {
+    if (!caps) return;
+    [].forEach.call(caps.querySelectorAll('.scene-cap'), function (btn) {
+      btn.classList.toggle('is-on', btn.getAttribute('data-scene') === sceneName);
+    });
+  }
+
+  function updateActiveCap() {
+    if (!caps || caps.hidden) return;
+    if (scrollLock) {
+      setOnCap(scrollLock);
+      return;
+    }
+    var groups = visibleGroups();
+    if (!groups.length) return;
+    var first = groups[0];
+    var firstName = first.getAttribute('data-scene') || '';
+    var panel = document.getElementById('panel-scene');
+    var panelOn = panel && panel.getAttribute('data-active') === 'true' && !panel.hidden && panel.offsetHeight > 0;
+    if (!panelOn) {
+      setOnCap(firstName);
+      return;
+    }
+    var line = stickyH() + 36;
+    var current = null;
+    groups.forEach(function (g) {
+      var head = g.querySelector('.sgroup-head') || g;
+      var rect = head.getBoundingClientRect();
+      if (rect.height === 0) return;
+      if (rect.top <= line) current = g;
+    });
+    setOnCap((current || first).getAttribute('data-scene') || '');
+  }
+
+  function renderCaps(pos) {
+    if (!caps) return;
+    if (pos === '通用') {
+      caps.innerHTML = '';
+      caps.hidden = true;
+      syncStickyH();
+      return;
+    }
+    caps.innerHTML = '';
+    list.querySelectorAll('.sgroup').forEach(function (group) {
+      if (group.hidden) return;
+      var name = group.getAttribute('data-scene') || '';
+      var prefix = name.split(/[\s/]/)[0];
+      if (pos !== 'all' && prefix !== pos) return;
+      if (pos === '个人' && capLabel(name) === '车内独处') return;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'scene-cap';
+      btn.setAttribute('data-scene', name);
+      btn.textContent = capLabel(name);
+      btn.addEventListener('click', function () {
+        scrollLock = name;
+        setOnCap(name);
+        scrollToGroup(document.getElementById(slug(name)));
+        window.clearTimeout(scrollToGroup._t);
+        scrollToGroup._t = window.setTimeout(function () {
+          scrollLock = null;
+          updateActiveCap();
+        }, 900);
+      });
+      caps.appendChild(btn);
+    });
+    caps.hidden = pos === '通用' || !caps.children.length;
+    syncStickyH();
+    updateActiveCap();
+  }
+
+  function applyFilter(pos) {
+    list.querySelectorAll('.sgroup').forEach(function (group) {
+      var shown = 0;
+      group.querySelectorAll('.scene-row').forEach(function (row) {
+        var on = pos === 'all' || row.getAttribute('data-pos').split('|').indexOf(pos) > -1;
+        row.hidden = !on;
+        if (on) shown++;
+      });
+      group.hidden = shown === 0;
+      var cnt = group.querySelector('.sgroup-head .cnt');
+      if (cnt) cnt.textContent = shown;
+      var visible = [].filter.call(group.querySelectorAll('.scene-row'), function (r) { return !r.hidden; });
+      visible.forEach(function (r, i) { r.style.borderTop = i === 0 ? '0' : ''; });
+    });
+    renderCaps(pos);
+  }
+
+  subtabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var pos = tab.getAttribute('data-pos');
+      subtabs.forEach(function (t) { t.setAttribute('aria-selected', String(t === tab)); });
+      applyFilter(pos);
+    });
+  });
+
+  window.syncSceneCaps = function () {
+    var active = tabsWrap.querySelector('.subtab[aria-selected="true"]');
+    var pos = active ? active.getAttribute('data-pos') : 'all';
+    renderCaps(pos);
+  };
+
+  window.addEventListener('scroll', updateActiveCap, { passive: true });
+  window.addEventListener('resize', function () { syncStickyH(); updateActiveCap(); });
+  renderCaps('all');
+})();
+
+/* —— 场景需求：复制为图片（html2canvas） —— */
+(function () {
+  var btn = document.getElementById('copySceneBtn');
+  var card = document.getElementById('sceneCard');
+  if (!btn || !card) return;
+
+  function setState(state, label) {
+    btn.dataset.state = state;
+    btn.title = label || '复制为图片';
+    btn.setAttribute('aria-label', label || '复制为图片');
+    if (state === 'done' || state === 'fail') {
+      setTimeout(function () { setState('idle', '复制为图片'); }, 2200);
+    }
+  }
+
+  function download(blob) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = '场景需求.png';
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+  }
+
+  function safeScale() {
+    var h = Math.max(card.scrollHeight || card.offsetHeight, 1);
+    var w = Math.max(card.scrollWidth || card.offsetWidth, 1);
+    return Math.max(1, Math.min(2, 30000 / h, 30000 / w, Math.sqrt(40e6 / (w * h))));
+  }
+
+  function renderBlob() {
+    if (typeof html2canvas === 'function') {
+      btn.style.visibility = 'hidden';
+      return html2canvas(card, {
+        backgroundColor: '#FFFFFF',
+        scale: safeScale(),
+        useCORS: true,
+        logging: false,
+        windowWidth: card.scrollWidth,
+        windowHeight: card.scrollHeight
+      }).then(function (cv) {
+        btn.style.visibility = '';
+        return new Promise(function (resolve, reject) {
+          cv.toBlob(function (b) { b ? resolve(b) : reject(new Error('toBlob failed')); }, 'image/png');
+        });
+      }).catch(function () {
+        btn.style.visibility = '';
+        return renderViaForeignObject();
+      });
+    }
+    return renderViaForeignObject();
+  }
+
+  function renderViaForeignObject() {
+    btn.style.visibility = 'hidden';
+    var w = card.offsetWidth;
+    var h = card.offsetHeight;
+    var clone = card.cloneNode(true);
+    clone.style.margin = '0';
+    clone.style.width = w + 'px';
+
+    var css = [].map.call(document.styleSheets, function (sheet) {
+      try {
+        return [].map.call(sheet.cssRules, function (r) { return r.cssText; }).join('\n');
+      } catch (e) { return ''; }
+    }).join('\n');
+
+    var holder = document.createElement('div');
+    holder.appendChild(clone);
+
+    var svg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
+      '<foreignObject width="100%" height="100%">' +
+      '<div xmlns="http://www.w3.org/1999/xhtml" style="background:#fff">' +
+      '<style>' + css + '</style>' + holder.innerHTML +
+      '</div></foreignObject></svg>';
+
+    btn.style.visibility = '';
+
+    return new Promise(function (resolve, reject) {
+      var img = new Image();
+      img.onload = function () {
+        var k = safeScale();
+        var cv = document.createElement('canvas');
+        cv.width = Math.round(w * k); cv.height = Math.round(h * k);
+        var ctx = cv.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, cv.width, cv.height);
+        ctx.drawImage(img, 0, 0, cv.width, cv.height);
+        cv.toBlob(function (b) { b ? resolve(b) : reject(new Error('toBlob failed')); }, 'image/png');
+      };
+      img.onerror = function () { reject(new Error('svg load failed')); };
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    });
+  }
+
+  btn.addEventListener('click', function () {
+    if (btn.dataset.state === 'busy') return;
+    setState('busy', '生成中…');
+
+    var canWrite = window.ClipboardItem && navigator.clipboard && navigator.clipboard.write;
+    if (!canWrite) {
+      renderBlob().then(function (b) { download(b); setState('done', '已下载图片'); })
+                  .catch(function () { setState('fail', '生成失败'); });
+      return;
+    }
+
+    var pending = renderBlob();
+    navigator.clipboard.write([new ClipboardItem({ 'image/png': pending })])
+      .then(function () { setState('done', '已复制 ✓'); })
+      .catch(function () {
+        return pending.then(function (b) {
+          return navigator.clipboard.write([new ClipboardItem({ 'image/png': b })])
+            .then(function () { setState('done', '已复制 ✓'); })
+            .catch(function () { download(b); setState('done', '已下载图片'); });
+        });
+      })
+      .catch(function () { setState('fail', '生成失败'); });
+  });
+})();
+
+/* —— 返回顶部：下滑超过一屏后出现 —— */
+(function () {
+  var btn = document.getElementById('backTop');
+  if (!btn) return;
+  var ticking = false;
+
+  function sync() {
+    ticking = false;
+    var show = window.scrollY > window.innerHeight;
+    btn.classList.toggle('is-on', show);
+    btn.setAttribute('aria-hidden', String(!show));
+    btn.tabIndex = show ? 0 : -1;
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(sync);
+  }
+
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  sync();
+})();
+</script>
+
+<script>
+window.ACCESS_GATE = {
+  password: "FTMC&Modelbest",
+  title: "一汽丰田·场景需求交流",
+  hint: "请输入访问密码后进入场景需求页面",
+  storageKey: "mb-access-gate-ftmc-scenario"
+};
+</script>
+<script src="access-gate.js"></script>
+<!-- mdou2-footer -->
+<div style="text-align:center;font-size:12px;opacity:0.55;padding:12px 0;">由 林泽涵 通过 <a href="https://mdou2.modelbest.co" target="_blank" rel="noopener" style="color:inherit;">mdou2</a> 制作</div>
+</body>
+</html>

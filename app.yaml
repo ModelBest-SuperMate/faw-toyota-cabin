@@ -1,0 +1,13 @@
+slug: faw-toyota-cabin--mdou2
+displayName: 一汽丰田座舱场景交流
+description: 由 mdou2 发布
+environment: prod
+components:
+  - name: web
+    repositoryUrl: https://codehub.devcloud.cn-north-4.huaweicloud.com/dd24575f5a4a4b9abfbdbf7e2d0061bd/faw-toyota-cabin--mdou2.git
+    branch: main
+    buildContext: .
+    dockerfilePath: Dockerfile
+    containerPort: 8080
+    healthPath: /
+    routePaths: ['/']

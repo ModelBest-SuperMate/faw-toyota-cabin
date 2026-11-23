@@ -1,0 +1,14 @@
+# .dockerignore 模板：构建上下文排除清单（Skill 生成 Dockerfile 时一并写入项目根）。
+# 与服务端归档契约同源（RFC-0001 §5.2）：改动须两处同步。
+.git
+node_modules
+.venv
+__pycache__
+dist
+build
+target
+.DS_Store
+.env
+*.pem
+*.key
+id_rsa*
